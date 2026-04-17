@@ -1,0 +1,5 @@
+session_id,workout_date,exercise,set_number,reps,weight_kg,notes,submitted_at
+3b793038-afcf-4a4b-a7f3-5df72790e87c,2026-04-17,Bench Press,1,8,60.0,Felt strong today,2026-04-17T06:17:34.506151+00:00
+3b793038-afcf-4a4b-a7f3-5df72790e87c,2026-04-17,Bench Press,2,6,65.0,Felt strong today,2026-04-17T06:17:34.506151+00:00
+3b793038-afcf-4a4b-a7f3-5df72790e87c,2026-04-17,Pull Ups,1,10,0.0,Felt strong today,2026-04-17T06:17:34.506151+00:00
+3b793038-afcf-4a4b-a7f3-5df72790e87c,2026-04-17,Pull Ups,2,8,0.0,Felt strong today,2026-04-17T06:17:34.506151+00:00
