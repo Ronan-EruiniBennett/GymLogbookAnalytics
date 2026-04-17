@@ -44,6 +44,19 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 ### Total Workout Sessions
 ![Total workout sessions](Athena_Queries/total_session_query.png)
 
+### Total Sets
+![Total Sets](Athena_Queries/total_sets_query.png)
+
+### Exercises per date
+![Exercises per date](Athena_Queries/exercises_per_date_query.png)
+
+### Average Exercises per session
+![Average Exercises per session](Athena_Queries/avg_exercise_per_session_query.png)
+
+### Total sets per Exercise
+![Total sets per Exercise Query](Athena_Queries/total_sets_per_exercise_query.png "Query")
+![Total sets per Exercise Results](Athena_Queries/total_sets_per_exercise_query_results.png "Results")
+
 ## Quicksight Visualisation Examples
 
 ## Challenges and Learnings
@@ -66,6 +79,7 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 - Sanitize multiline notes before writing to CSV
 - Improve input validation to reduce malformed or incomplete records
 - Extend the schema to capture heart rate or RPE data per set
+- Larger dataset
 
 ### Analytics & Platform
 - Add richer QuickSight dashboards for progress tracking and exercise trends
