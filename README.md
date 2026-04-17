@@ -87,11 +87,6 @@ It was built to explore how serverless architectures can be used to capture and 
 
 ## Quicksight Visualisation Examples
 
-## Challenges and Learnings
-- Ingestion issues caused by multiline fields in CSV breaking schema-on-read parsing in Athena
-- Integration of Cognito as an authoriser in Amazon API Gateway and integration into JavaScript
-- Designing an end to end serverless workflow
-- Structuring SQL queries and understanding the importance of data transformation, validation, and ingestion
 
 ## Future Improvements
 
@@ -114,9 +109,11 @@ It was built to explore how serverless architectures can be used to capture and 
 - Convert processed CSV data into Parquet for more efficient querying
 - Automate deployment and updates with CI/CD using GitHub actions
 
-## Key Learnings
+## Challenges and Learnings
 
-* Importance of clean, structured data in schema-on-read systems like Athena
-* Identifying and resolving issues caused by incorrect file formats (.numbers vs CSV) in S3
-* Practical experience designing and debugging a full AWS data pipeline
-* Understanding how different AWS services integrate in a real-world workflow
+- Debugged ingestion issues caused by multiline CSV fields breaking schema-on-read parsing in Athena  
+- Identified problems caused by incorrect file formats (.numbers vs CSV) in S3  
+- Integrated Cognito authentication with API Gateway and frontend JavaScript  
+- Designed and implemented an end-to-end serverless data pipeline  
+- Structured SQL queries to extract meaningful insights from workout data  
+- Developed an understanding of how data formatting impacts downstream analytics systems  
