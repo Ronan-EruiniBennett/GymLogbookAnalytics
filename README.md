@@ -3,43 +3,71 @@
 ## Overview
 This system implements a serverless, end-to-end data pipeline on AWS for collecting, processing, and visualising gym workout data.
 
-# How it works
+It was built to explore how serverless architectures can be used to capture and analyse real-world data, while gaining hands-on experience with AWS data and analytics services.
+
+## Project Structure
+```
+.
+├── Athena_Queries/        # Screenshots of Athena queries and results
+├── README.md              # Project documentation
+├── architecture.png       # Cloud architecture diagram
+```
 ## Architecture
 <img width="3449" height="1100" alt="Cloud Architecture" src="https://github.com/user-attachments/assets/9592bfe0-400a-4a9d-a1cf-006a505079ef" />
 
 ## Tech Stack
-- Frontend: HTML, JavaScript
-- Cloud: S3, CloudFront, Route 53, API Gateway, Lambda, Cognito, ACM
-- Data: AWS Glue, Athena
-- Visualisation: QuickSight
+
+**Frontend**
+
+* HTML, JavaScript
+
+**Cloud & Infrastructure**
+
+* S3, CloudFront, Route 53, API Gateway, Lambda, Cognito, ACM
+
+**Data & Analytics**
+
+* AWS Glue, Athena
+
+**Visualisation**
+
+* QuickSight
+
+## Data Pipeline
 
 ### 1. Frontend & Delivery
-- User accesses the application via a custom domain
-- DNS is resolved using Route 53
-- Static frontend is served through CloudFront from an S3 bucket (OAC enabled)
+
+* User accesses the application via a custom domain
+* DNS is resolved using Route 53
+* Static frontend is served through CloudFront from an S3 bucket (OAC enabled)
 
 ### 2. Authentication
-- User clicks "Login" and is redirected to Amazon Cognito
-- After successful authentication, Cognito redirects back with a JWT token
+
+* User clicks "Login" and is redirected to Amazon Cognito
+* After successful authentication, Cognito redirects back with a JWT token
 
 ### 3. Data Ingestion
-- User submits workout data via the web form
-- API Gateway validates the request using Cognito User Pool authorisation
-- Data is sent to an AWS Lambda function
+
+* User submits workout data via the web form
+* API Gateway validates the request using Cognito User Pool authorisation
+* Data is posted to an AWS Lambda function
 
 ### 4. Data Processing & Storage
-- Lambda validates and transforms raw JSON into structured CSV format
-- Processed data is stored in an S3 data bucket
+
+* Lambda validates and transforms raw JSON into structured CSV format
+* Processed data is stored in an S3 data bucket
 
 ### 5. Data Analytics
-- AWS Glue crawlers catalog the data
-- Amazon Athena queries the dataset
-- Amazon QuickSight visualises trends and performance insights
 
-# Live Demo
-- Web App: rebgymlog.info
+* AWS Glue crawlers catalog the data
+* Amazon Athena queries the dataset
+* Amazon QuickSight visualises trends and performance insights
+
+## Live Demo
+- Web App: https://rebgymlog.info
 
 ## Athena Queries Examples
+- These queries were used to analyse workout patterns and extract insights from the dataset.
 
 ### Total Workout Sessions
 ![Total workout sessions](Athena_Queries/total_session_query.png)
@@ -61,9 +89,9 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 
 ## Challenges and Learnings
 - Ingestion issues caused by multiline fields in CSV breaking schema-on-read parsing in Athena
-- Integration of Cognito as an authoriser in Amazon API Gateway and integration into Javascript
-- Desiging an end to end serverless workflow
-- SQL, Structuring Queries and importance of data transformation, validation, and ingestion
+- Integration of Cognito as an authoriser in Amazon API Gateway and integration into JavaScript
+- Designing an end to end serverless workflow
+- Structuring SQL queries and understanding the importance of data transformation, validation, and ingestion
 
 ## Future Improvements
 
@@ -71,7 +99,7 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 - Prefill or duplicate values from the previous set
 - Display last week’s weights alongside each exercise
 - Save and suggest exercises from previous sessions
-- Selecting a saved workout according to User
+- Allow users to select and reuse saved workouts
 - Add support for assisted bodyweight exercises, including band-assisted options
 - Add body weight metric
 
@@ -79,9 +107,16 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 - Sanitize multiline notes before writing to CSV
 - Improve input validation to reduce malformed or incomplete records
 - Extend the schema to capture heart rate or RPE data per set
-- Larger dataset
+- Expand dataset size for more meaningful analysis
 
 ### Analytics & Platform
 - Add richer QuickSight dashboards for progress tracking and exercise trends
 - Convert processed CSV data into Parquet for more efficient querying
-- Automate deployment and updates with CI/CD using GITHUB actions
+- Automate deployment and updates with CI/CD using GitHub actions
+
+## Key Learnings
+
+* Importance of clean, structured data in schema-on-read systems like Athena
+* Identifying and resolving issues caused by incorrect file formats (.numbers vs CSV) in S3
+* Practical experience designing and debugging a full AWS data pipeline
+* Understanding how different AWS services integrate in a real-world workflow
