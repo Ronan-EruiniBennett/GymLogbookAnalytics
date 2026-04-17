@@ -42,7 +42,7 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 ## Athena Queries Examples
 
 ### Total Workout Sessions
-![Total workout sessions](Athena Queries/Total Session Query.png)
+![Total workout sessions](Athena_Queries/total_session_query.png)
 
 ## Quicksight Visualisation Examples
 
