@@ -30,5 +30,25 @@ This system implements a serverless, end-to-end data pipeline on AWS for collect
 - Amazon Athena queries the dataset
 - Amazon QuickSight visualises trends and performance insights
 
-#Challenges and Learnings
+# Challenges and Learnings
 - Ingestion issues caused by multiline fields in CSV breaking schema-on-read parsing in Athena
+
+## Future Improvements
+
+### Application Features
+- Prefill or duplicate values from the previous set
+- Display last week’s weights alongside each exercise
+- Save and suggest exercises from previous sessions
+- Selecting a saved workout according to User
+- Add support for assisted bodyweight exercises, including band-assisted options
+- Add body weight metric
+
+### Data Quality & Processing
+- Sanitize multiline notes before writing to CSV
+- Improve input validation to reduce malformed or incomplete records
+- Extend the schema to capture heart rate or RPE data per set
+
+### Analytics & Platform
+- Add richer QuickSight dashboards for progress tracking and exercise trends
+- Convert processed CSV data into Parquet for more efficient querying
+- Automate deployment and updates with CI/CD using GITHUB actions
