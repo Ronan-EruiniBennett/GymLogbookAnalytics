@@ -11,6 +11,9 @@ It was built to explore how serverless architectures can be used to capture and 
 ├── Athena_Queries/        # Screenshots of Athena queries and results
 ├── README.md              # Project documentation
 ├── architecture.png       # Cloud architecture diagram
+├── lambda                 # Lambda function code for transformation and validation
+├── sample-data            # example lambda event and output csv
+├── Quicksight             # xxxx
 ```
 ## Architecture
 <img width="3449" height="1100" alt="Cloud Architecture" src="https://github.com/user-attachments/assets/9592bfe0-400a-4a9d-a1cf-006a505079ef" />
