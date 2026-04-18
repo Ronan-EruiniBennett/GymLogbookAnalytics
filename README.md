@@ -13,7 +13,7 @@ It was built to explore how serverless architectures can be used to capture and 
 ├── architecture.png       # Cloud architecture diagram
 ├── lambda                 # Lambda function code for transformation and validation
 ├── sample-data            # example lambda event and output csv
-├── Quicksight             # xxxx
+├── Quicksight             # Dashboard Screenshots and results
 ```
 ## Architecture
 <img width="3449" height="1100" alt="Cloud Architecture" src="https://github.com/user-attachments/assets/9592bfe0-400a-4a9d-a1cf-006a505079ef" />
@@ -89,13 +89,16 @@ It was built to explore how serverless architectures can be used to capture and 
 ![Total sets per Exercise Results](Athena_Queries/total_sets_per_exercise_query_results.png "Results")
 
 ## Quicksight Visualisation Examples
-QuickSight visualisations to gather data trends and insights.
+Interactive QuickSight visualisations exploring gym performance metrics and training patterns.
 
-### 
+### Donut Chart Sum of Reps per Exercise
+![donut](QuickSight_Visualisations/donut_graph.png)
 
-###
+### Stacked Bar chart Sum of Reps by Exercise and Set Number
+![stackedbar](QuickSight_Visualisations/stacked_bar_chart.png)
 
-###
+### Sankey Diagram Sum of Reps by Session and Exercise
+![sankey](QuickSight_Visualisations/sankey_diagram.png)
 
 ## Future Improvements
 
