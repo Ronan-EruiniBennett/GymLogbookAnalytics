@@ -89,7 +89,13 @@ It was built to explore how serverless architectures can be used to capture and 
 ![Total sets per Exercise Results](Athena_Queries/total_sets_per_exercise_query_results.png "Results")
 
 ## Quicksight Visualisation Examples
+QuickSight visualisations to gather data trends and insights.
 
+### 
+
+###
+
+###
 
 ## Future Improvements
 
