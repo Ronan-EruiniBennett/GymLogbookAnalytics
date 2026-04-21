@@ -128,4 +128,5 @@ Interactive QuickSight visualisations exploring gym performance metrics and trai
 - Integrated Cognito authentication with API Gateway and frontend JavaScript  
 - Designed and implemented an end-to-end serverless data pipeline  
 - Structured SQL queries to extract meaningful insights from workout data  
-- Developed an understanding of how data formatting impacts downstream analytics systems  
+- Developed an understanding of how data formatting impacts downstream analytics systems
+- Leveraged AI-assisted development tools to generate, debug, and refine Lambda functions, infrastructure configuration, and frontend logic, accelerating prototyping while validating system behaviour  
