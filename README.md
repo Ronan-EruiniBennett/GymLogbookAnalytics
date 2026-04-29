@@ -45,7 +45,7 @@ The project focuses on:
 ├── Quicksight             # Dashboard Screenshots and results
 ```
 ## Architecture
-<img width="3449" height="1100" alt="Cloud Architecture" src="https://github.com/user-attachments/assets/9592bfe0-400a-4a9d-a1cf-006a505079ef" />
+<img width="6471" height="2063" alt="Cloud Architecture" src="https://github.com/user-attachments/assets/d00ed53e-49ec-48db-b983-e6967c598940" />
 
 ## Key Design Decisions
 
