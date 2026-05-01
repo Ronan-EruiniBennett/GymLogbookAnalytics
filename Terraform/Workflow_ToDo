@@ -5,8 +5,8 @@ cloudfront with OAC and ACM cert completed
 Include Upload object Index.html in static bucket
 
 To do
-Cognito + API gateway
 Lambda function + upload Lambda application code
+Cognito + API gateway
 create glue db of data bucket
 setup athena to query using glue and sending results to query bucket
 setup quicksight
