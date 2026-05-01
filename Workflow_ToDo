@@ -1,0 +1,15 @@
+Completed:
+S3 Bucket, bucket policies, and configurations 
+Route 53 + ACM
+cloudfront with OAC and ACM cert completed
+Include Upload object Index.html in static bucket
+
+To do
+Cognito + API gateway
+Lambda function + upload Lambda application code
+create glue db of data bucket
+setup athena to query using glue and sending results to query bucket
+setup quicksight
+
+Notes for next steps:
+
