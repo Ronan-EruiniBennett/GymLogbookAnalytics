@@ -12,6 +12,11 @@ The project focuses on:
 * handling real-world data validation and transformation challenges
 * understanding how data format decisions impact downstream analytics
 
+## 🚧 Terraform Refactor (In Progress)
+
+Currently refactoring this project to use Terraform for Infrastructure as Code.
+Goal: fully reproducible deployment of all infrastructure.
+
 ## Trade-offs & Limitations
 
 - **Serverless backend (Lambda, API Gateway)**  
