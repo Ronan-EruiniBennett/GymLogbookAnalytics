@@ -16,7 +16,6 @@ Cloudfront configurations need updating:
     - HTTP/2 & HTTP/3
     - Use recomended version of TLS
     - Switch to PRICE_CLASS_200
-    -Cloudfront Distribution is pointing towards static website endpoint not REST endpoint
 
 S3 Buckets:
     - No change needed
