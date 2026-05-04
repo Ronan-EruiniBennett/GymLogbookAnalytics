@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
-      locations        = ["aus"]
+      locations        = ["AU"]
     }
   }
 
