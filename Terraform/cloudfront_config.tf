@@ -22,6 +22,8 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
   is_ipv6_enabled     = true
   comment             = "CloudFront distribution for static web hosting"
   default_root_object = "Index.html"
+  http_version = "http2and3"
+
 
   aliases = ["${var.my_domain_name}"]
 
@@ -30,6 +32,7 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = local.s3_origin_id
     viewer_protocol_policy = "redirect-to-https"
+
 
     forwarded_values {
       query_string = false
@@ -45,7 +48,7 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
     compress    = true
   }
 
-  price_class = "PriceClass_All"
+  price_class = "PriceClass_200"
 
   restrictions {
     geo_restriction {
@@ -57,5 +60,7 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
   viewer_certificate {
     acm_certificate_arn = aws_acm_certificate_validation.validation_process.certificate_arn
     ssl_support_method  = "sni-only"
+    cloudfront_default_certificate = false
+    minimum_protocol_version = "TLSv1.3_2025"
   }
 }

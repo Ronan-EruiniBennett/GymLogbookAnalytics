@@ -4,28 +4,17 @@ Route 53 + ACM
 cloudfront with OAC and ACM cert completed
 Include Upload object Index.html in static bucket
 
-To do
+State 1 Test:
+Success
+
+State 2
 Lambda function + upload Lambda application code
 Cognito + API gateway
+
+State 3
 create glue db of data bucket
 setup athena to query using glue and sending results to query bucket
 setup quicksight
-
-Test Findings from State 1:
-Cloudfront configurations need updating:
-    - HTTP/2 & HTTP/3
-    - Use recomended version of TLS
-    - Switch to PRICE_CLASS_200
-
-S3 Buckets:
-    - No change needed
-
-Route 53:
-    - No change needed
-
-ACM:
-    - No change needed
-
 
 Notes for next steps:
 
