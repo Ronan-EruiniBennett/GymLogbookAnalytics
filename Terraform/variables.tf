@@ -23,12 +23,22 @@ variable "query_bucket_name" {
   type        = string
 }
 
-variable "Index_path" {
-  description = "The path to the Index.html file"
+variable "index_path" {
+  description = "The path to the index.html file"
   type        = string
 }
 
 variable "my_domain_name" {
   description = "Route 53 domain name"
   type        = string
+}
+
+variable "cognito_user_pool" {
+  description = "Cognito user pool"
+  type = string
+}
+
+variable "cognito_user_pool_client" {
+  description = "Cognito user client"
+  type = string
 }

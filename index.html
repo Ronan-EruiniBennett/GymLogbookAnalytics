@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gym Logbook</title>
+  <style>
+
+    :root {
+      --page: #f5f7fb;
+      --page-2: #eef3f8;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --surface-muted: #f1f5f9;
+      --ink: #111827;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --success: #0f766e;
+      --danger: #b91c1c;
+      --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.07);
+      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 8% -10%, rgba(37, 99, 235, 0.08), transparent 26rem),
+        radial-gradient(circle at 96% 0%, rgba(15, 118, 110, 0.06), transparent 22rem),
+        linear-gradient(180deg, var(--page) 0%, var(--page-2) 100%);
+      padding: 28px 20px 56px;
+    }
+
+    body::before,
+    body::after { display: none; }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .app-shell {
+      width: min(1160px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 22px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero::before,
+    .sidebar::before,
+    .panel::before,
+    .details-card::before,
+    .field::before,
+    .exercise-block::after,
+    .set-row::before { display: none; }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-mark {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dbeafe;
+      background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: auto 10px 8px 10px;
+      height: 3px;
+      border-radius: 999px;
+      background: #bfdbfe;
+    }
+
+    .brand-mark svg {
+      width: 34px;
+      height: 34px;
+      stroke: var(--primary);
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      position: relative;
+      z-index: 1;
+    }
+
+    .plate-ring,
+    .plate-hole,
+    .plate-notch { stroke: var(--primary); }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: clamp(2.15rem, 4.8vw, 4rem);
+      line-height: 0.96;
+      letter-spacing: -0.07em;
+      color: var(--ink);
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.65;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: 1px solid #bfdbfe;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 0.84rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .hero-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+      flex: 0 0 auto;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      padding: 20px;
+    }
+
+    .side-title {
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #authStatus {
+      margin: 0 0 18px;
+      padding: 14px 15px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--ink-soft);
+      background: var(--surface-soft);
+      font-size: 0.92rem;
+      font-weight: 720;
+      line-height: 1.5;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 26px 28px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .panel-title {
+      margin-bottom: 6px;
+      font-size: 1.4rem;
+      letter-spacing: -0.045em;
+      color: var(--ink);
+    }
+
+    .panel-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    form { padding: 28px; }
+
+    .details-card {
+      margin-bottom: 30px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .details-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .details-heading h3 {
+      margin: 0;
+      font-size: 1.06rem;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .details-heading p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .details-pill {
+      flex: 0 0 auto;
+      padding: 8px 11px;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: var(--primary-soft);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.72fr) minmax(340px, 1.28fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+
+    .field span,
+    label > span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.98rem;
+      padding: 12px 13px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 112px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    input::placeholder,
+    textarea::placeholder { color: #94a3b8; }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 2px 0 16px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1.24rem;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+    }
+
+    .section-kicker {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .exercise-block {
+      position: relative;
+      border: 1px solid var(--line);
+      padding: 21px;
+      margin-bottom: 18px;
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .exercise-block::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 18px;
+      bottom: 18px;
+      width: 4px;
+      border-radius: 999px;
+      background: var(--primary);
+      opacity: 0.85;
+    }
+
+    .exercise-title {
+      margin-bottom: 18px;
+      padding-left: 2px;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .sets-container {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .set-row {
+      display: grid;
+      grid-template-columns: 76px minmax(120px, 1fr) minmax(140px, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface-soft);
+    }
+
+    .set-label {
+      align-self: center;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 40px;
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: var(--primary-soft);
+      border: 1px solid #bfdbfe;
+      font-size: 0.82rem;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .set-row label,
+    .exercise-block label { margin: 0; }
+
+    .button-row {
+      margin: 18px 0 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .exercise-actions {
+      margin-top: 10px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font: inherit;
+      font-size: 0.96rem;
+      font-weight: 850;
+      letter-spacing: -0.01em;
+      min-height: 44px;
+      padding: 11px 18px;
+      color: #ffffff;
+      background: var(--primary);
+      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease, background 160ms ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: var(--primary-dark);
+      box-shadow: 0 14px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    button:active:not(:disabled) { transform: translateY(0); }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+      box-shadow: none;
+    }
+
+    .small-button,
+    .add-set-btn,
+    #addExerciseBtn,
+    .remove-set-btn,
+    .remove-exercise-btn,
+    #logoutBtn {
+      background: #ffffff;
+      color: var(--ink-soft);
+      border: 1px solid var(--line-strong);
+      box-shadow: none;
+    }
+
+    .small-button {
+      min-height: 38px;
+      padding: 8px 13px;
+      font-size: 0.86rem;
+    }
+
+    .small-button:hover:not(:disabled),
+    .add-set-btn:hover:not(:disabled),
+    #addExerciseBtn:hover:not(:disabled),
+    .remove-set-btn:hover:not(:disabled),
+    .remove-exercise-btn:hover:not(:disabled),
+    #logoutBtn:hover:not(:disabled) {
+      background: var(--surface-muted);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    #submitBtn,
+    #loginBtn { width: 100%; }
+
+    #submitBtn {
+      min-height: 54px;
+      margin-top: 14px;
+    }
+
+    #loginBtn { margin-bottom: 10px; }
+
+    #status {
+      min-height: 52px;
+      margin: 20px 28px 28px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--ink-soft);
+      background: var(--surface-soft);
+      font-weight: 780;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .app-grid,
+      .form-grid { grid-template-columns: 1fr; }
+
+      .sidebar { position: static; }
+
+      .hero-badge { width: fit-content; }
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 18px 12px 36px; }
+
+      .hero,
+      form,
+      .panel-header { padding: 20px; }
+
+      .details-card { padding: 16px; }
+
+      .details-heading,
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .exercise-actions,
+      #addExerciseBtn { width: 100%; }
+
+      .set-row { grid-template-columns: 1fr; }
+
+      .set-label {
+        justify-content: flex-start;
+        width: fit-content;
+        padding: 0 14px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <div class="brand-row">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" role="img" aria-hidden="true">
+              <circle class="plate-ring" cx="18" cy="18" r="11.5" />
+              <circle class="plate-hole" cx="18" cy="18" r="3.8" />
+              <path class="plate-notch" d="M18 7.8v2.7" />
+              <path class="plate-notch" d="M18 25.5v2.7" />
+              <path class="plate-notch" d="M7.8 18h2.7" />
+              <path class="plate-notch" d="M25.5 18h2.7" />
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow">Training logbook</p>
+            <h1>Gym Logbook</h1>
+            <p class="hero-copy">Plan, log, and review training sessions in a clean workspace built for everyday workout tracking.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-badge" aria-label="Current workspace">Workout workspace</div>
+    </section>
+
+    <div class="app-grid">
+      <aside class="sidebar">
+        <p class="side-title">Account</p>
+        <p id="authStatus">Checking login status...</p>
+        <button type="button" id="loginBtn">Log in</button>
+        <button type="button" id="logoutBtn">Log out</button>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">New workout session</h2>
+            <p class="panel-subtitle">Capture session details, log each exercise clearly, and keep your training organised in one focused workout workspace.</p>
+          </div>
+        </div>
+
+        <form id="gymForm">
+          <section class="details-card" aria-label="Workout details">
+            <div class="details-heading">
+              <div>
+                <h3>Workout details</h3>
+                <p>Set the date and session notes first, then build out the workout below.</p>
+              </div>
+              <span class="details-pill">Logbook entry</span>
+            </div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span>Workout date</span>
+                <input type="date" name="workout_date" required />
+              </label>
+
+              <label class="field">
+                <span>Session notes</span>
+                <textarea name="notes" rows="4" cols="50" placeholder="Session focus, RPE, technique cues, pain notes, or anything to review later"></textarea>
+              </label>
+            </div>
+          </section>
+
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Exercises</h2>
+              <p class="section-kicker">Add exercises and record each set with reps and weight.</p>
+            </div>
+          </div>
+
+          <div id="exercisesContainer"></div>
+
+          <div class="exercise-actions">
+            <button type="button" id="addExerciseBtn">Add Exercise</button>
+          </div>
+
+          <button type="submit" id="submitBtn">Save Workout Session</button>
+        </form>
+
+        <p id="status"></p>
+      </section>
+    </div>
+  </main>
+
+<script>
+// =============================
+// Config
+// =============================    
+    const API_URL = "https://7g00zw1ht6.execute-api.ap-southeast-2.amazonaws.com/submit"; // API Gateway endpoint URL for submitting workout sessions. 
+    const COGNITO_DOMAIN = "https://ap-southeast-2kbqeotwju.auth.ap-southeast-2.amazoncognito.com"; // Your Cognito User Pool domain. 
+    const CLIENT_ID = "26afs9usq4jcuagfi3tsksbcpc"; // Cognito App Client ID. Defining which app is requesting authentication. Must match the client ID configured in your Cognito User Pool App Client settings.
+    const REDIRECT_URI = "https://rebgymlog.info"; // The URI to which Cognito will redirect after login/logout. 
+
+// =============================
+// Page Elements & Variables
+// ============================= 
+
+    const gymForm = document.getElementById("gymForm"); 
+    const exercisesContainer = document.getElementById("exercisesContainer");
+    const addExerciseBtn = document.getElementById("addExerciseBtn");
+    const statusEl = document.getElementById("status");
+    const authStatusEl = document.getElementById("authStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+/// =============================
+/// Auth
+/// =============================
+
+
+    function saveTokensFromUrl() {
+      const hash = window.location.hash.substring(1); // Extracting everything from the hash in the URL. .substring removes the hash symbol itself. And defining it as a variable called "hash".
+      const params = new URLSearchParams(hash); // Defining varible "params". URLSearchParams is a built-in JavaScript class that makes it easy to work with query strings or hash fragments in URLs. Turns the hash fragment or query string into an object like interface where you can easily get values by their keys.
+
+      const accessToken = params.get("access_token"); // Retrieving the value of the "access_token" from params (URLSearchParams object) and defining it as a variable called "accessToken". 
+      const idToken = params.get("id_token"); // Retrieving the value of the "id_token" from params (URLSearchParams object) and defining it as a variable called "idToken".
+
+      if (accessToken) {
+        localStorage.setItem("access_token", accessToken);
+      } // If there is an access token in the URL, it is saved to localStorage under the key "access_token". 
+
+      if (idToken) {
+        localStorage.setItem("id_token", idToken);
+      } // If there is an ID token in the URL, it is saved to localStorage under the key "id_token".
+
+      if (accessToken || idToken) {
+        window.history.replaceState({}, document.title, REDIRECT_URI);
+      } // If either an access token or ID token was found in the URL, this line removes the tokens from the URL by replacing the current history entry with a new one that has the same title but a clean URL (the REDIRECT_URI). This is done to prevent tokens from being visible in the URL after they have been extracted and stored.
+    }
+
+    function getAccessToken() {
+      return localStorage.getItem("access_token");
+    } // Retrieves the access token from local storage. 
+
+    function isLoggedIn() {
+      return !!getAccessToken();
+    } // Check whether the getAccessToken function returns a truthy value. Returns true if access token exists, false if it doesn't.
+
+    function updateAuthUi() { // Updates Auth UI elements based on whether the user is logged in or not. 
+      const loggedIn = isLoggedIn(); // Defines boolean value of isLoggedIn() function as variable "loggedIn".
+
+      submitBtn.disabled = !loggedIn; // If not logged in, disable the submit button. If logged in, enable it.
+
+      if (loggedIn) {
+        authStatusEl.textContent = "Logged in. You can now save workout sessions."; // If logged in, update the authStatus element to show a message confirming that the user is logged in and can save workout sessions.
+        loginBtn.disabled = true; // If logged in, disable the login button to prevent unnecessary login attempts.
+        logoutBtn.disabled = false; // If logged in, enable the logout button so the user can log out if they choose to.
+      } else {
+        authStatusEl.textContent = "Not logged in. Please log in to save workout sessions."; // If not logged in, update the authStatus element to show a message prompting the user to log in to save workout sessions.
+        loginBtn.disabled = false; // If not logged in, enable the login button so the user can log in.
+        logoutBtn.disabled = true; // If not logged in, disable the logout button since it is not applicable when the user is not logged in.
+      }
+    }
+
+    function login() { 
+      const loginUrl =
+        `${COGNITO_DOMAIN}/login` +
+        `?client_id=${encodeURIComponent(CLIENT_ID)}` +
+        `&response_type=token` +
+        `&scope=${encodeURIComponent("openid email profile")}` +
+        `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+        // Building the Congnito login URL with differefent query parameters. 
+      window.location.href = loginUrl; // Redirecting the user to the Cognito login page by setting the window location to the constructed login URL.
+    }
+
+    function logout() {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("id_token");
+      // Removes the access token and ID token from local storage to effectively log the user out on the client side.
+      const logoutUrl =
+        `${COGNITO_DOMAIN}/logout` +
+        `?client_id=${encodeURIComponent(CLIENT_ID)}` +
+        `&logout_uri=${encodeURIComponent(REDIRECT_URI)}`;
+        // Building the Cognito logout URL with the necessary query parameters to log the user out and redirect them back to the specified URI after logout.
+      window.location.href = logoutUrl; // Redirecting the user to the Cognito logout page by setting the window location to the constructed logout URL.
+    }
+
+/// =============================
+/// Exercise Form functions
+/// =============================
+
+    function renumberExercises() {
+      const exerciseBlocks = document.querySelectorAll(".exercise-block"); // Finding all elements with the class "exercise-block" and defining them as a variable called "exerciseBlocks". 
+      exerciseBlocks.forEach((block, index) => { // Looping through each exercise, calls it block, and also gets its index in the list of exercise blocks.
+        const title = block.querySelector(".exercise-title"); // For each exercise block, find the element with the class "exercise-title" (the title of the exercise) and define it as a variable called "title".
+        title.textContent = `Exercise ${index + 1}`; // Update the text content of the title element to "Exercise X", where X is the index of the exercise block plus 1 (to start counting from 1 instead of 0). This effectively renumbers the exercises in the UI whenever an exercise is added or removed.
+      });
+    }
+
+    function renumberSets(exerciseBlock) {
+      const setRows = exerciseBlock.querySelectorAll(".set-row"); // find all elements with the class "set-row" within the given exercise block and define them as a variable called "setRows".
+      setRows.forEach((row, index) => { // Loop through each set row, call it "row", and also get its index in the list of set rows.
+        const label = row.querySelector(".set-label"); // For each set row, find the element with the class "set-label" (the label that indicates which set it is) and define it as a variable called "label".
+        label.textContent = `Set ${index + 1}`; // Update the text content of the label element to "Set X", where X is the index of the set row plus 1 (to start counting from 1 instead of 0). This effectively renumbers the sets within an exercise block whenever a set is added or removed.
+      });
+    }
+
+    function createSetRow(exerciseBlock, reps = "", weightKg = "") {
+      const row = document.createElement("div"); // Create a new element for the set row and define it as a variable called "row".
+      row.className = "set-row"; // Set the class name of the row element to "set-row" so it can be styled and identified as a set row in the UI.
+
+      row.innerHTML = `
+        <strong class="set-label">Set</strong>
+        <label>
+          <span>Reps</span>
+          <input type="number" class="reps-input" min="0" required value="${reps}" />
+        </label>
+        <label>
+          <span>Weight (kg)</span>
+          <input type="number" class="weight-input" min="0" step="0.1" required value="${weightKg}" />
+        </label>
+        <button type="button" class="remove-set-btn small-button">Remove Set</button>
+      `; // Set the inner HTML of the row element to include the structure for a set, which consists of a label for the set number, input fields for reps and weight, and a button to remove the set. The values for reps and weight can be pre-filled by passing them as arguments to the function.
+
+      row.querySelector(".remove-set-btn").addEventListener("click", () => {
+        row.remove();
+        renumberSets(exerciseBlock);
+      }); // On the current row, adds an event listener to the "remove set" button upon clicking the button, the current row will be removed from the DOM, and then the remaining sets will be renumbered by calling the renumberSets function with the current exercise block as an argument.
+
+      return row; 
+    }
+
+    function addSet(exerciseBlock) {  
+      const setsContainer = exerciseBlock.querySelector(".sets-container"); // Finds the element with the class "sets-container" within the given exercise block and defines it as a variable called "setsContainer".
+      const row = createSetRow(exerciseBlock); // Defines the row variable by calling the createSetRow function, and passing the output container as an argument so that the new set row can be properly linked to its exercise block for renumbering purposes.
+      setsContainer.appendChild(row); // Appends the newly created set row to the sets container within the exercise block, making it visible in the UI as part of that exercise.
+      renumberSets(exerciseBlock); // Runs the renumberSets function to update the numbering of all sets within the exercise block, ensuring that the new set is correctly numbered in sequence with any existing sets.
+    }
+
+    function createExerciseBlock() {
+      const exerciseBlock = document.createElement("div"); // Creates a new element for the exercise block and defines it as a variable called "exerciseBlock".
+      exerciseBlock.className = "exercise-block"; // Sets the class name of the exercise block element to "exercise-block" so it can be styled and identified as an exercise block in the UI.
+
+      exerciseBlock.innerHTML = `
+        <h3 class="exercise-title">Exercise</h3>
+
+        <label>
+          <span>Exercise name</span>
+          <input type="text" class="exercise-name-input" placeholder="e.g. Bench Press" required />
+        </label>
+
+        <div class="sets-container"></div>
+
+        <div class="button-row">
+          <button type="button" class="add-set-btn small-button">Add Set</button>
+          <button type="button" class="remove-exercise-btn small-button">Remove Exercise</button>
+        </div>
+      `; // Sets the inner HTML of the exercise block element to include the structure for an exercise.
+
+      const addSetBtn = exerciseBlock.querySelector(".add-set-btn"); // Finds the element with the class "add-set-btn" within the exercise block and defines it as a variable called "addSetBtn".
+      const removeExerciseBtn = exerciseBlock.querySelector(".remove-exercise-btn"); // Finds the element with the class "remove-exercise-btn" within the exercise block and defines it as a variable called "removeExerciseBtn".
+
+      addSetBtn.addEventListener("click", () => addSet(exerciseBlock)); // Adds an event listener to the "add set" button within the exercise block. When the button is clicked, it calls the addSet function and passes the current exercise block as an argument so that the new set can be properly linked to its exercise block for renumbering purposes.
+
+      removeExerciseBtn.addEventListener("click", () => { 
+        exerciseBlock.remove();
+        renumberExercises();
+      }); // Adds an event listener to the "remove exercise" button within the exercise block. When the button is clicked, it removes the entire exercise block from the DOM and then calls the renumberExercises function to update the numbering of any remaining exercises in the UI.
+
+      addSet(exerciseBlock); // Returns the newly created exercise block element, which includes one default set row added by calling the addSet function with the new exercise block as an argument to ensure it is properly linked for renumbering.
+
+      return exerciseBlock;
+    }
+
+    function addExercise() {
+      const block = createExerciseBlock();
+      exercisesContainer.appendChild(block);
+      renumberExercises();
+    } // The addExercise function creates a new exercise block by calling the createExerciseBlock function, appends it to the exercises container in the UI, and then calls the renumberExercises function to update the numbering of all exercises to ensure the new exercise is correctly numbered in sequence with any existing exercises.
+
+    function collectExercises() {
+      const exerciseBlocks = document.querySelectorAll(".exercise-block"); // Finds all elements with the class "exercise-block" and defines them as a variable called "exerciseBlocks".
+
+      return Array.from(exerciseBlocks).map((block) => {
+        const exerciseName = block.querySelector(".exercise-name-input").value.trim();
+        const setRows = block.querySelectorAll(".set-row");
+
+        const sets = Array.from(setRows).map((row) => {
+          return {
+            reps: row.querySelector(".reps-input").value,
+            weight_kg: row.querySelector(".weight-input").value
+          };
+        }); 
+
+        return {
+          name: exerciseName,
+          sets: sets
+        };
+      });
+    } // Collects the exercise data. Finds each exercise block and retrieves the array of exercises with their names and sets. Creates a new array with the name of each exercise and an array of its sets. It nests the values for reps and weight within each set object. This structured data can then be sent to the backend when saving the workout session.
+
+
+/// =============================
+/// Form Behavior and initialization
+/// =============================
+ 
+    addExerciseBtn.addEventListener("click", addExercise); // Adds an event listener to the "add exercise" button. When the button is clicked, it calls the addExercise function to create and add a new exercise block to the UI.
+    loginBtn.addEventListener("click", login); // Adds an event listener to the "login" button. When the button is clicked, it calls the login function to initiate the login process by redirecting the user to the Cognito login page.
+    logoutBtn.addEventListener("click", logout); // Adds an event listener to the "logout" button. When the button is clicked, it calls the logout function to log the user out by clearing tokens from local storage and redirecting to the Cognito logout page.
+
+    gymForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const token = getAccessToken();
+
+      if (!token) {
+        statusEl.textContent = "Please log in before saving a workout.";
+        updateAuthUi();
+        return;
+      } // No token found, changes the status element to show a message prompting the user to log in before saving a workout, calls the updateAuthUi function to ensure the UI reflects the logged-out state, and then exits the function early to prevent further execution.
+
+      const formData = new FormData(gymForm); // Creates a new FormData object from the gymForm element, which allows for easy retrieval of form input values.
+
+      const payload = {
+        workout_date: formData.get("workout_date"),
+        notes: formData.get("notes") || "",
+        exercises: collectExercises()
+      }; // Constructs the payload object that will be sent to the backend when saving the workout session. It includes the workout date, any notes (defaulting to an empty string if no notes are provided), and an array of exerciss and their nested sets collected by the collectExercises function.
+
+      if (!payload.workout_date) {
+        statusEl.textContent = "Please enter a workout date.";
+        return;
+      } // Data validation: If the workout date is not provided in the payload, it updates the status element to show a message prompting the user to enter a workout date and then exits the function early to prevent further execution.
+
+      if (payload.exercises.length === 0) {
+        statusEl.textContent = "Please add at least one exercise.";
+        return;
+      } // Data validation: If no exercises are added to the payload, it updates the status element to show a message prompting the user to add an exercise and then exits the function early to prevent further execution.
+
+      for (const exercise of payload.exercises) {
+        if (!exercise.name) {
+          statusEl.textContent = "Each exercise must have a name.";
+          return;
+        } // Searches through each exercise in the payload, and if any exercise does not have a name, it updates the status element to show a message prompting the user to ensure that each exercise has a name and then exits the function early to prevent further execution.
+
+        if (!exercise.sets.length) {
+          statusEl.textContent = `Exercise "${exercise.name}" must have at least one set.`;
+          return;
+        } // If exercise does not have any sets, it updates the status element to show a message prompting the user to ensure that each exercise has at least one set and then exits the function early to prevent further execution.
+
+        for (const set of exercise.sets) {
+          if (set.reps === "" || set.weight_kg === "") {
+            statusEl.textContent = "Every set must include reps and weight.";
+            return;
+          }
+        } // If any set within an exercise does not have both reps and weight filled out, it updates the status element to show a message prompting the user to ensure that every set includes both reps and weight and then exits the function early to prevent further execution.
+      }
+
+      submitBtn.disabled = true;
+      statusEl.textContent = "Saving...";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        }); // Makes a POST request to the API_URL endpoint to save the workout session. It includes the access token in the Authorization header for authentication and sends the payload as a JSON string in the request body.
+
+        const rawText = await response.text(); // Waits for the response from the server and retrieves it as raw text. This is done to handle cases where the response might not be valid JSON, allowing for more robust error handling.
+        let data = {}; // Initializes an empty object called "data" to store the parsed response from the server.
+
+        try {
+          data = rawText ? JSON.parse(rawText) : {};
+        } catch (jsonError) {
+          data = { message: rawText };
+        } // Attempts to parse the raw response text as JSON. If parsing is successful, the resulting object is stored in the "data" variable. If parsing fails (e.g., if the response is not valid JSON), it catches the error and instead assigns an object with a "message" property containing the raw text. This allows for graceful handling of unexpected response formats while still providing feedback to the user.
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("id_token");
+            updateAuthUi();
+            throw new Error("Your login has expired. Please log in again.");
+          } // Response failure handling: If the response status is 401 (Unauthorized), it indicates that the user's login session has expired. In this case, it removes the access token and ID token from local storage to clear any invalid credentials, calls the updateAuthUi function to update the UI to reflect the logged-out state, and then throws a new error with a message prompting the user to log in again.
+
+          throw new Error(data.message || "Request failed"); // If the response is not successful (i.e., response.ok is false) and the status is not 401, it throws a new error with a message extracted from the response data (if available) or a generic "Request failed" message if no specific message is provided in the response. This allows for error handling of various failure scenarios when attempting to save the workout session.
+        } 
+
+        statusEl.textContent = `Saved successfully. ${data.row_count ?? 0} set rows written to S3.`;
+
+        gymForm.reset();
+        exercisesContainer.innerHTML = "";
+        addExercise();
+      } catch (error) {
+        statusEl.textContent = `Error: ${error.message}`;
+      }
+      submitBtn.disabled = false;
+    });
+
+    saveTokensFromUrl(); 
+    addExercise();
+    updateAuthUi();
+  </script>
+</body>
+</html>

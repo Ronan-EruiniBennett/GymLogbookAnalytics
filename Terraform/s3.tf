@@ -6,11 +6,11 @@ resource "aws_s3_bucket" "static_web_bucket" {
 // Index.html file upload with MD5 hash to detect changes and trigger updates in the static website hosting.
 resource "aws_s3_object" "staticpage" {
   bucket       = aws_s3_bucket.static_web_bucket.id
-  key          = "Index.html"
-  source       = var.Index_path
+  key          = "index.html"
+  source       = var.index_path
   content_type = "text/html"
 
-  etag = filemd5(var.Index_path)
+  etag = filemd5(var.index_path)
 }
 
 // Data bucket for storing user data and workout logs
