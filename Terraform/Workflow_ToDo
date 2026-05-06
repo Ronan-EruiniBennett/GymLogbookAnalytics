@@ -20,4 +20,5 @@ setup athena to query using glue and sending results to query bucket
 setup quicksight
 
 Notes for next steps:
-make api gateway. add authorisation requirement to be apart of cognito user pool for post and options routes.
+Add scheme to cognito user pool client. Retest. Check if lambda is invokeable from api gateway.
+add local terraform writes to index.html.

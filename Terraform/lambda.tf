@@ -1,7 +1,7 @@
-// IAM Policy for role
+// IAM permissions Policy for role
 data "aws_iam_policy_document" "lambda_gym_log_execution_policy" {
     statement {
-      sid = ""
+      sid = "AllowLambdas3Push"
       effect = "Allow"
 
       principals {
@@ -15,11 +15,21 @@ data "aws_iam_policy_document" "lambda_gym_log_execution_policy" {
       condition {
         test = "StringEquals"
         variable = "aws:PrincipalArn"
-        values = [ "${aws_lambda_function.gym-log-csv-function.arn}" ]
+        values = [ "${aws_lambda_function.gym_log_csv_function.arn}" ]
       }
     }
 }
 
+// IAM trusy policy for lambda
+data "aws_iam_policy_document" "trust_policy_gym_function" {
+  statement {
+    sid = "AllowLambdaToAssumeRole"
+    effect = "Allow"
+
+    actions = [ "sts:AssumeRole" ]
+  }
+  
+}
 
 // Packaging the Lambda function file
 data "archive_file" "CSV_transformation_logic" {
@@ -31,16 +41,21 @@ data "archive_file" "CSV_transformation_logic" {
 // Creating execution role for lambda
 resource "aws_iam_role" "lambda_gym_log_execution_role" {
     name = "Gymlog_function_role"
-    assume_role_policy = data.aws_iam_policy_document.lambda_gym_log_execution_policy.json 
+    assume_role_policy = data.aws_iam_policy_document.trust_policy_gym_function.json
 }
 
+resource "aws_iam_role_policy" "add_permissions" {
+  name = "LambdaAllows3Push"
+  policy = data.aws_iam_policy_document.lambda_gym_log_execution_policy.json
+  role = aws_iam_role.lambda_gym_log_execution_role.id
+}
 
 // Create the Lambda function resource, uses sha256 to discover changes in source file, creates environment variable BUCKET_NAME for the lambda function to use.
 resource "aws_lambda_function" "gym_log_csv_function" {
   filename = data.archive_file.CSV_transformation_logic.output_path
-  function_name = "GymLog Submit JSON to CSV function"
+  function_name = "GymLogSubmitJSONtoCSV"
   role = aws_iam_role.lambda_gym_log_execution_role.arn
-  handler = var.lambda_file_name.lambda_handler
+  handler = "${var.lambda_file_name}.lambda_handler"
   code_sha256 = data.archive_file.CSV_transformation_logic.output_base64sha512
 
   runtime = "python3.14"

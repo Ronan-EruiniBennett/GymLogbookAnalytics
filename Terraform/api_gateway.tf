@@ -7,7 +7,7 @@ resource "aws_apigatewayv2_api" "httpAPI" {
       allow_credentials = false
       allow_headers = [ "content-type", "authorization" ]
       allow_methods = [ "POST", "OPTIONS" ]
-      allow_origins = [var.subdomain]
+      allow_origins = ["https://${var.subdomain}"]
       max_age = 3600
     }
 
@@ -22,7 +22,7 @@ resource "aws_apigatewayv2_authorizer" "APIAuthorizer" {
     authorizer_result_ttl_in_seconds = 0
     
     jwt_configuration {
-      audience = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id
+      audience = [aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id]
       issuer = aws_cognito_user_pool.Gymlogbook_user_pool.endpoint
     }
 }
@@ -48,5 +48,11 @@ resource "aws_apigatewayv2_route" "post_route" {
 }
 
 // API gateway Stage
+resource "aws_apigatewayv2_stage" "httpAPI_stage" {
+  api_id = aws_apigatewayv2_api.httpAPI.id
+  name = "$default"
+  
+  auto_deploy = true
+}
 
-// API gateway Deployment
+// API gateway Deployment not needed with auto_deploy
