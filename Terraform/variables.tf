@@ -42,3 +42,28 @@ variable "cognito_user_pool_client" {
   description = "Cognito user client"
   type = string
 }
+
+variable "hosted_zone_domain" {
+  description = "pre-made hosted zone domain"
+  type = string
+}
+
+variable "subdomain" {
+  description = "new subdomain of hosted zone"
+  type = string 
+}
+
+variable "lambda_source_path" {
+  description = "lambda source path"
+  type = string
+}
+
+variable "lambda_zip_output_path" {
+  description = "Output path for the lambda zip package"
+  type = string
+}
+
+variable "lambda_file_name" {
+  description = "File name for the lambda function, no suffix"
+  type = string
+}

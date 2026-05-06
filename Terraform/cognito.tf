@@ -14,8 +14,8 @@ resource "aws_cognito_user_pool_client" "Gymlogbook_user_pool_client" {
     user_pool_id = aws_cognito_user_pool.Gymlogbook_user_pool.id
     
     allowed_oauth_flows_user_pool_client = true
-    callback_urls = ["tf.rebgymlog.info"]
-    logout_urls = ["tf.rebgymlog.info"]
+    callback_urls = [var.subdomain]
+    logout_urls = [var.subdomain]
     supported_identity_providers = ["COGNITO"]
     allowed_oauth_flows = ["implicit"]
     allowed_oauth_scopes = ["openid"]

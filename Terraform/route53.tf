@@ -1,13 +1,13 @@
 // Already created hosted zone
 data "aws_route53_zone" "rebgymlog" {
-  name         = "rebgymlog.info"
+  name         = var.hosted_zone_domain
   private_zone = false
 }
 
 // Create a record for the subdomain tf.rebgymlog.info that points to rebgymlog.info
 resource "aws_route53_record" "subdomain_record" {
   zone_id = data.aws_route53_zone.rebgymlog.zone_id
-  name    = "tf.rebgymlog.info"
+  name    = var.subdomain
   type    = "A"
 
   alias {
@@ -20,7 +20,7 @@ resource "aws_route53_record" "subdomain_record" {
 // Create an ACM certificate for the subdomain tf.rebgymlog.info in us-east-1 region
 resource "aws_acm_certificate" "subdomain" {
   provider          = aws.us-east-1
-  domain_name       = "tf.rebgymlog.info"
+  domain_name       = var.subdomain
   validation_method = "DNS"
 
   lifecycle {
