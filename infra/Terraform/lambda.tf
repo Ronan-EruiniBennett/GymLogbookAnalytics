@@ -4,19 +4,8 @@ data "aws_iam_policy_document" "lambda_gym_log_execution_policy" {
     sid    = "AllowLambdas3Push"
     effect = "Allow"
 
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
     actions   = ["s3:PutObject"]
     resources = ["${aws_s3_bucket.data_bucket.arn}/*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalArn"
-      values   = ["${aws_lambda_function.gym_log_csv_function.arn}"]
-    }
   }
 }
 
@@ -25,6 +14,11 @@ data "aws_iam_policy_document" "trust_policy_gym_function" {
   statement {
     sid    = "AllowLambdaToAssumeRole"
     effect = "Allow"
+
+    principals {
+      type = "Service"
+      identifiers = [ "lambda.amazonaws.com" ]
+    }
 
     actions = ["sts:AssumeRole"]
   }
@@ -51,7 +45,7 @@ resource "aws_iam_role_policy" "add_permissions" {
   role   = aws_iam_role.lambda_gym_log_execution_role.id
 }
 
-// allowing lambda to publish logs to cloudwatch logs for troubleshooting
+// Allowing lambda to publish logs to cloudwatch logs for troubleshooting
 resource "aws_iam_role_policy_attachment" "add_logging" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role       = aws_iam_role.lambda_gym_log_execution_role.id
