@@ -20,5 +20,5 @@ setup athena to query using glue and sending results to query bucket
 setup quicksight
 
 Notes for next steps:
-Need to add a resource based permission to lambda to allow invocations from api gateway. Retest. Check if lambda is invokeable from api gateway.
+Retest. Check api gateway link works. Check if lambda is invokeable from api gateway.
 add local terraform writes to index.html.
