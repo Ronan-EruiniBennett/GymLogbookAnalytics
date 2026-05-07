@@ -20,7 +20,7 @@ resource "aws_apigatewayv2_authorizer" "APIAuthorizer" {
   authorizer_type                  = "JWT"
   name                             = "Cognito_Token_Authorizer"
   authorizer_result_ttl_in_seconds = 0
-  identity_sources = [ "$request.header.Authorization" ]
+  identity_sources                 = ["$request.header.Authorization"]
 
   jwt_configuration {
     audience = [aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id]
