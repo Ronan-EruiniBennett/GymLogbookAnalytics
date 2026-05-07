@@ -44,9 +44,16 @@ resource "aws_iam_role" "lambda_gym_log_execution_role" {
     assume_role_policy = data.aws_iam_policy_document.trust_policy_gym_function.json
 }
 
+// Allowing Lambda to push objects to s3 data bucket
 resource "aws_iam_role_policy" "add_permissions" {
   name = "LambdaAllows3Push"
   policy = data.aws_iam_policy_document.lambda_gym_log_execution_policy.json
+  role = aws_iam_role.lambda_gym_log_execution_role.id
+}
+
+// allowing lambda to publish logs to cloudwatch logs for troubleshooting
+resource "aws_iam_role_policy_attachment" "add_logging" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role = aws_iam_role.lambda_gym_log_execution_role.id
 }
 
