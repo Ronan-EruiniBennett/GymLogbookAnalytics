@@ -22,7 +22,7 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
   is_ipv6_enabled     = true
   comment             = "CloudFront distribution for static web hosting"
   default_root_object = "Index.html"
-  http_version = "http2and3"
+  http_version        = "http2and3"
 
 
   aliases = ["${var.my_domain_name}"]
@@ -58,9 +58,9 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate_validation.validation_process.certificate_arn
-    ssl_support_method  = "sni-only"
+    acm_certificate_arn            = aws_acm_certificate_validation.validation_process.certificate_arn
+    ssl_support_method             = "sni-only"
     cloudfront_default_certificate = false
-    minimum_protocol_version = "TLSv1.3_2025"
+    minimum_protocol_version       = "TLSv1.3_2025"
   }
 }
