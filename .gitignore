@@ -6,3 +6,5 @@ node_modules/
 *.tfstate
 *.tfstate.backup
 terraform.tfvars
+scripts
+Workflow_ToDo

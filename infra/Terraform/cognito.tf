@@ -20,6 +20,7 @@ resource "aws_cognito_user_pool_client" "Gymlogbook_user_pool_client" {
   supported_identity_providers         = ["COGNITO"]
   allowed_oauth_flows                  = ["implicit"]
   allowed_oauth_scopes                 = ["openid"]
+  explicit_auth_flows                  = ["ALLOW_USER_PASSWORD_AUTH"]
 
   access_token_validity = 1
   id_token_validity     = 1
