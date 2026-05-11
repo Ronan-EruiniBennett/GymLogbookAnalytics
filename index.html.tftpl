@@ -663,10 +663,10 @@
 // =============================
 // Config
 // =============================    
-    const API_URL = "https://7g00zw1ht6.execute-api.ap-southeast-2.amazonaws.com/submit"; // API Gateway endpoint URL for submitting workout sessions. 
-    const COGNITO_DOMAIN = "https://ap-southeast-2kbqeotwju.auth.ap-southeast-2.amazoncognito.com"; // Your Cognito User Pool domain. 
-    const CLIENT_ID = "26afs9usq4jcuagfi3tsksbcpc"; // Cognito App Client ID. Defining which app is requesting authentication. Must match the client ID configured in your Cognito User Pool App Client settings.
-    const REDIRECT_URI = "https://rebgymlog.info"; // The URI to which Cognito will redirect after login/logout. 
+    const API_URL = "${API_URL}"; // API Gateway endpoint URL for submitting workout sessions. 
+    const COGNITO_DOMAIN = "https://${COGNITO_DOMAIN}.auth.${AWS_REGION}.amazoncognito.com"; // Your Cognito User Pool domain. 
+    const CLIENT_ID = "${CLIENT_ID}"; // Cognito App Client ID. Defining which app is requesting authentication. Must match the client ID configured in your Cognito User Pool App Client settings.
+    const REDIRECT_URI = "${REDIRECT_URI}"; // The URI to which Cognito will redirect after login/logout. 
 
 // =============================
 // Page Elements & Variables
@@ -732,11 +732,11 @@
 
     function login() { 
       const loginUrl =
-        `${COGNITO_DOMAIN}/login` +
-        `?client_id=${encodeURIComponent(CLIENT_ID)}` +
+        `$${COGNITO_DOMAIN}/login` +
+        `?client_id=$${encodeURIComponent(CLIENT_ID)}` +
         `&response_type=token` +
-        `&scope=${encodeURIComponent("openid email profile")}` +
-        `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+        `&scope=$${encodeURIComponent("openid email profile")}` +
+        `&redirect_uri=$${encodeURIComponent(REDIRECT_URI)}`;
         // Building the Congnito login URL with differefent query parameters. 
       window.location.href = loginUrl; // Redirecting the user to the Cognito login page by setting the window location to the constructed login URL.
     }
@@ -746,9 +746,9 @@
       localStorage.removeItem("id_token");
       // Removes the access token and ID token from local storage to effectively log the user out on the client side.
       const logoutUrl =
-        `${COGNITO_DOMAIN}/logout` +
-        `?client_id=${encodeURIComponent(CLIENT_ID)}` +
-        `&logout_uri=${encodeURIComponent(REDIRECT_URI)}`;
+        `$${COGNITO_DOMAIN}/logout` +
+        `?client_id=$${encodeURIComponent(CLIENT_ID)}` +
+        `&logout_uri=$${encodeURIComponent(REDIRECT_URI)}`;
         // Building the Cognito logout URL with the necessary query parameters to log the user out and redirect them back to the specified URI after logout.
       window.location.href = logoutUrl; // Redirecting the user to the Cognito logout page by setting the window location to the constructed logout URL.
     }
@@ -761,7 +761,7 @@
       const exerciseBlocks = document.querySelectorAll(".exercise-block"); // Finding all elements with the class "exercise-block" and defining them as a variable called "exerciseBlocks". 
       exerciseBlocks.forEach((block, index) => { // Looping through each exercise, calls it block, and also gets its index in the list of exercise blocks.
         const title = block.querySelector(".exercise-title"); // For each exercise block, find the element with the class "exercise-title" (the title of the exercise) and define it as a variable called "title".
-        title.textContent = `Exercise ${index + 1}`; // Update the text content of the title element to "Exercise X", where X is the index of the exercise block plus 1 (to start counting from 1 instead of 0). This effectively renumbers the exercises in the UI whenever an exercise is added or removed.
+        title.textContent = `Exercise $${index + 1}`; // Update the text content of the title element to "Exercise X", where X is the index of the exercise block plus 1 (to start counting from 1 instead of 0). This effectively renumbers the exercises in the UI whenever an exercise is added or removed.
       });
     }
 
@@ -769,7 +769,7 @@
       const setRows = exerciseBlock.querySelectorAll(".set-row"); // find all elements with the class "set-row" within the given exercise block and define them as a variable called "setRows".
       setRows.forEach((row, index) => { // Loop through each set row, call it "row", and also get its index in the list of set rows.
         const label = row.querySelector(".set-label"); // For each set row, find the element with the class "set-label" (the label that indicates which set it is) and define it as a variable called "label".
-        label.textContent = `Set ${index + 1}`; // Update the text content of the label element to "Set X", where X is the index of the set row plus 1 (to start counting from 1 instead of 0). This effectively renumbers the sets within an exercise block whenever a set is added or removed.
+        label.textContent = `Set $${index + 1}`; // Update the text content of the label element to "Set X", where X is the index of the set row plus 1 (to start counting from 1 instead of 0). This effectively renumbers the sets within an exercise block whenever a set is added or removed.
       });
     }
 
@@ -781,11 +781,11 @@
         <strong class="set-label">Set</strong>
         <label>
           <span>Reps</span>
-          <input type="number" class="reps-input" min="0" required value="${reps}" />
+          <input type="number" class="reps-input" min="0" required value="$${reps}" />
         </label>
         <label>
           <span>Weight (kg)</span>
-          <input type="number" class="weight-input" min="0" step="0.1" required value="${weightKg}" />
+          <input type="number" class="weight-input" min="0" step="0.1" required value="$${weightKg}" />
         </label>
         <button type="button" class="remove-set-btn small-button">Remove Set</button>
       `; // Set the inner HTML of the row element to include the structure for a set, which consists of a label for the set number, input fields for reps and weight, and a button to remove the set. The values for reps and weight can be pre-filled by passing them as arguments to the function.
@@ -912,7 +912,7 @@
         } // Searches through each exercise in the payload, and if any exercise does not have a name, it updates the status element to show a message prompting the user to ensure that each exercise has a name and then exits the function early to prevent further execution.
 
         if (!exercise.sets.length) {
-          statusEl.textContent = `Exercise "${exercise.name}" must have at least one set.`;
+          statusEl.textContent = `Exercise "$${exercise.name}" must have at least one set.`;
           return;
         } // If exercise does not have any sets, it updates the status element to show a message prompting the user to ensure that each exercise has at least one set and then exits the function early to prevent further execution.
 
@@ -932,7 +932,7 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer $${token}`
           },
           body: JSON.stringify(payload)
         }); // Makes a POST request to the API_URL endpoint to save the workout session. It includes the access token in the Authorization header for authentication and sends the payload as a JSON string in the request body.
@@ -957,13 +957,13 @@
           throw new Error(data.message || "Request failed"); // If the response is not successful (i.e., response.ok is false) and the status is not 401, it throws a new error with a message extracted from the response data (if available) or a generic "Request failed" message if no specific message is provided in the response. This allows for error handling of various failure scenarios when attempting to save the workout session.
         } 
 
-        statusEl.textContent = `Saved successfully. ${data.row_count ?? 0} set rows written to S3.`;
+        statusEl.textContent = `Saved successfully. $${data.row_count ?? 0} set rows written to S3.`;
 
         gymForm.reset();
         exercisesContainer.innerHTML = "";
         addExercise();
       } catch (error) {
-        statusEl.textContent = `Error: ${error.message}`;
+        statusEl.textContent = `Error: $${error.message}`;
       }
       submitBtn.disabled = false;
     });

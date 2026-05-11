@@ -26,3 +26,9 @@ resource "aws_cognito_user_pool_client" "Gymlogbook_user_pool_client" {
   id_token_validity     = 1
   auth_session_validity = 3
 }
+
+resource "aws_cognito_user_pool_domain" "Gymlogbook_user_pool_domain" {
+  user_pool_id = aws_cognito_user_pool.Gymlogbook_user_pool.id
+  managed_login_version = 1
+  domain = "gymlogbook-auth"
+}

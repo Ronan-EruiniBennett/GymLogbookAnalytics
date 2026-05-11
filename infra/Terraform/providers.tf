@@ -1,6 +1,6 @@
 // Configure the AWS provider/plugin to allow Terraform to talk to AWS.
 provider "aws" {
-  region = "ap-southeast-2"
+  region = var.AWS_REGION
   default_tags {
     tags = {
       Owner       = "Ronan"

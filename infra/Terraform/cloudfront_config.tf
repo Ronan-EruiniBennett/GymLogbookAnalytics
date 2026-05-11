@@ -13,7 +13,7 @@ resource "aws_cloudfront_origin_access_control" "static_web_oac" {
 
 resource "aws_cloudfront_distribution" "static_web_distribution" {
   origin {
-    domain_name              = aws_s3_bucket.static_web_bucket.bucket_domain_name
+    domain_name              = aws_s3_bucket.static_web_bucket.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.static_web_oac.id
     origin_id                = local.s3_origin_id
   }
@@ -21,7 +21,7 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   comment             = "CloudFront distribution for static web hosting"
-  default_root_object = "Index.html"
+  default_root_object = "index.html"
   http_version        = "http2and3"
 
 

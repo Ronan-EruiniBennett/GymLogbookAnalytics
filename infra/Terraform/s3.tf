@@ -7,8 +7,15 @@ resource "aws_s3_bucket" "static_web_bucket" {
 resource "aws_s3_object" "staticpage" {
   bucket       = aws_s3_bucket.static_web_bucket.id
   key          = "index.html"
-  source       = var.index_path
   content_type = "text/html"
+
+  content = templatefile(var.index_path, {
+    API_URL = aws_apigatewayv2_stage.httpAPI_stage.invoke_url, 
+    COGNITO_DOMAIN = aws_cognito_user_pool_domain.Gymlogbook_user_pool_domain.domain,
+    CLIENT_ID = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id,
+    REDIRECT_URI = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.default_redirect_uri,
+    AWS_REGION = var.AWS_REGION
+  })
 
   etag = filemd5(var.index_path)
 }

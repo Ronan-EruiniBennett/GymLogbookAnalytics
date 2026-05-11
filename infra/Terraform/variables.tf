@@ -67,3 +67,8 @@ variable "lambda_file_name" {
   description = "File name for the lambda function, no suffix"
   type        = string
 }
+
+variable "AWS_REGION" {
+  description = "AWS selected region"
+  type = string
+}
