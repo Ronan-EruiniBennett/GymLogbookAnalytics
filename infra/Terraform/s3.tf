@@ -14,7 +14,8 @@ resource "aws_s3_object" "staticpage" {
     COGNITO_DOMAIN = aws_cognito_user_pool_domain.Gymlogbook_user_pool_domain.domain,
     CLIENT_ID = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id,
     REDIRECT_URI = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.default_redirect_uri,
-    AWS_REGION = var.AWS_REGION
+    AWS_REGION = var.AWS_REGION,
+    API_WORKOUT_ROUTE = split(" ", aws_apigatewayv2_route.post_route.route_key)[1]
   })
 
   etag = filemd5(var.index_path)

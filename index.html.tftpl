@@ -667,6 +667,8 @@
     const COGNITO_DOMAIN = "https://${COGNITO_DOMAIN}.auth.${AWS_REGION}.amazoncognito.com"; // Your Cognito User Pool domain. 
     const CLIENT_ID = "${CLIENT_ID}"; // Cognito App Client ID. Defining which app is requesting authentication. Must match the client ID configured in your Cognito User Pool App Client settings.
     const REDIRECT_URI = "${REDIRECT_URI}"; // The URI to which Cognito will redirect after login/logout. 
+    const API_WORKOUT_ROUTE = "${API_WORKOUT_ROUTE}"; // the route to submit workout for api gateway
+    const ROUTE = API_WORKOUT_ROUTE.replace(/\/$/, "")
 
 // =============================
 // Page Elements & Variables
@@ -928,7 +930,7 @@
       statusEl.textContent = "Saving...";
 
       try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(API_URL + ROUTE, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
