@@ -735,7 +735,7 @@
         `$${COGNITO_DOMAIN}/login` +
         `?client_id=$${encodeURIComponent(CLIENT_ID)}` +
         `&response_type=token` +
-        `&scope=$${encodeURIComponent("openid email profile")}` +
+        `&scope=$${encodeURIComponent("openid")}` +
         `&redirect_uri=$${encodeURIComponent(REDIRECT_URI)}`;
         // Building the Congnito login URL with differefent query parameters. 
       window.location.href = loginUrl; // Redirecting the user to the Cognito login page by setting the window location to the constructed login URL.
