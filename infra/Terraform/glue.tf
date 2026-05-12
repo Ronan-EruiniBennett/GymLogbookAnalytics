@@ -1,11 +1,11 @@
 // Glue Database catalog
 resource "aws_glue_catalog_database" "workout_analytics" {
-    name = "Workout_analytics"
+    name = "workout_analytics"
 }
 
 // Glue Table
 resource "aws_glue_catalog_table" "workout_table" {
-  name = "Workout_table"
+  name = "workout_table"
   database_name = aws_glue_catalog_database.workout_analytics.id
 }
 
@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "workout_crawler_role" {
       condition {
         test = "ArnLike"
         variable = "aws:SourceArn"
-        values = [ "arn:aws:glue:ap-southeast-2:${data.aws_caller_identity.account.account_id}:crawler/${aws_glue_crawler.workout_crawler.name}" ]
+        values = [ "arn:aws:glue:ap-southeast-2:${data.aws_caller_identity.account.account_id}:crawler/*" ]
       }
     }  
 }
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "workout_crawler_permissions" {
 // Creating IAM role for crawler with trust policy
 resource "aws_iam_role" "workout_crawler_role" {
     name = "workout_crawler_role"
-    assume_role_policy = data.aws_iam_policy_document.workout_crawler_role
+    assume_role_policy = data.aws_iam_policy_document.workout_crawler_role.json
 }
 
 // Attaching managed glue service policy to role
@@ -66,16 +66,25 @@ resource "aws_iam_role_policy_attachment" "ManagerdGluePolicy" {
     policy_arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
 }
 
-// Attatching bucket specific permission policy to crawler
-resource "aws_iam_role_policy_attachment" "s3_workout_crawler_permissions" {
+// Attatching bucket specific permission policy inline to crawler
+resource "aws_iam_role_policy" "s3_workout_crawler_permissions" {
+  name = "s3_workout_crawler_permissions"
   role = aws_iam_role.workout_crawler_role.id
-  policy_arn = data.aws_iam_policy_document.workout_crawler_permissions.arn
+  policy = data.aws_iam_policy_document.workout_crawler_permissions.json
 }
 
 // Glue crawler
 resource "aws_glue_crawler" "workout_crawler" {
     database_name = aws_glue_catalog_database.workout_analytics.id
     name = "Workout_crawler"
+    role = aws_iam_role.workout_crawler_role.arn
 
+    s3_target {
+      path = "s3://${aws_s3_bucket.data_bucket.bucket}/"
+    }
+
+    recrawl_policy {
+      recrawl_behavior = "CRAWL_NEW_FOLDERS_ONLY"
+    }
   
 }
