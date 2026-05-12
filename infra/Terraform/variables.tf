@@ -70,5 +70,5 @@ variable "lambda_file_name" {
 
 variable "AWS_REGION" {
   description = "AWS selected region"
-  type = string
+  type        = string
 }

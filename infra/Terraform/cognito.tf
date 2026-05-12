@@ -28,13 +28,13 @@ resource "aws_cognito_user_pool_client" "Gymlogbook_user_pool_client" {
 }
 
 resource "aws_cognito_user_pool_domain" "Gymlogbook_user_pool_domain" {
-  user_pool_id = aws_cognito_user_pool.Gymlogbook_user_pool.id
+  user_pool_id          = aws_cognito_user_pool.Gymlogbook_user_pool.id
   managed_login_version = 2
-  domain = "gymlogbook-auth"
+  domain                = "gymlogbook-auth"
 }
 
 resource "aws_cognito_managed_login_branding" "login_branding" {
-  client_id = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id
+  client_id    = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id
   user_pool_id = aws_cognito_user_pool.Gymlogbook_user_pool.id
 
   use_cognito_provided_values = true

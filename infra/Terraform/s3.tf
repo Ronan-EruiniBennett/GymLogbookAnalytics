@@ -10,11 +10,11 @@ resource "aws_s3_object" "staticpage" {
   content_type = "text/html"
 
   content = templatefile(var.index_path, {
-    API_URL = aws_apigatewayv2_stage.httpAPI_stage.invoke_url, 
-    COGNITO_DOMAIN = aws_cognito_user_pool_domain.Gymlogbook_user_pool_domain.domain,
-    CLIENT_ID = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id,
-    REDIRECT_URI = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.default_redirect_uri,
-    AWS_REGION = var.AWS_REGION,
+    API_URL           = aws_apigatewayv2_stage.httpAPI_stage.invoke_url,
+    COGNITO_DOMAIN    = aws_cognito_user_pool_domain.Gymlogbook_user_pool_domain.domain,
+    CLIENT_ID         = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.id,
+    REDIRECT_URI      = aws_cognito_user_pool_client.Gymlogbook_user_pool_client.default_redirect_uri,
+    AWS_REGION        = var.AWS_REGION,
     API_WORKOUT_ROUTE = split(" ", aws_apigatewayv2_route.post_route.route_key)[1]
   })
 
@@ -29,4 +29,6 @@ resource "aws_s3_bucket" "data_bucket" {
 // Query bucket for storing results of Athena queries
 resource "aws_s3_bucket" "query_bucket" {
   bucket = var.query_bucket_name
+
+  force_destroy = true
 }
