@@ -21,6 +21,12 @@ data "aws_iam_policy_document" "trust_policy_gym_function" {
     }
 
     actions = ["sts:AssumeRole"]
+
+    condition {
+        test = "StringEquals"
+        variable = "aws:SourceAccount"
+        values = [data.aws_caller_identity.account.account_id]
+      }
   }
 
 }
