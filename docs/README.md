@@ -136,32 +136,32 @@ Goal: fully reproducible deployment of all infrastructure.
 - These queries were used to analyse workout patterns and extract insights from the dataset.
 
 ### Total Workout Sessions
-![Total workout sessions](Athena_Queries/total_session_query.png)
+![Total workout sessions](../Athena_Queries/total_session_query.png)
 
 ### Total Sets
-![Total Sets](Athena_Queries/total_sets_query.png)
+![Total Sets](../Athena_Queries/total_sets_query.png)
 
 ### Exercises per date
-![Exercises per date](Athena_Queries/exercises_per_date_query.png)
+![Exercises per date](../Athena_Queries/exercises_per_date_query.png)
 
 ### Average Exercises per session
-![Average Exercises per session](Athena_Queries/avg_exercise_per_session_query.png)
+![Average Exercises per session](../Athena_Queries/avg_exercise_per_session_query.png)
 
 ### Total sets per Exercise
-![Total sets per Exercise Query](Athena_Queries/total_sets_per_exercise_query.png "Query")
-![Total sets per Exercise Results](Athena_Queries/total_sets_per_exercise_query_results.png "Results")
+![Total sets per Exercise Query](../Athena_Queries/total_sets_per_exercise_query.png "Query")
+![Total sets per Exercise Results](../Athena_Queries/total_sets_per_exercise_query_results.png "Results")
 
 ## Quicksight Visualisation Examples
 Interactive QuickSight visualisations exploring gym performance metrics and training patterns.
 
 ### Donut Chart Sum of Reps per Exercise
-![donut](QuickSight_Visualisations/donut_graph.png)
+![donut](../QuickSight_Visualisations/donut_graph.png)
 
 ### Stacked Bar chart Sum of Reps by Exercise and Set Number
-![stackedbar](QuickSight_Visualisations/stacked_bar_chart.png)
+![stackedbar](../QuickSight_Visualisations/stacked_bar_chart.png)
 
 ### Sankey Diagram Sum of Reps by Session and Exercise
-![sankey](QuickSight_Visualisations/sankey_diagram.png)
+![sankey](../QuickSight_Visualisations/sankey_diagram.png)
 
 ## Future Improvements
 
@@ -172,12 +172,14 @@ Interactive QuickSight visualisations exploring gym performance metrics and trai
 - Allow users to select and reuse saved workouts
 - Add support for assisted bodyweight exercises, including band-assisted options
 - Add body weight metric
+- Normalise exercise names
 
 ### Data Quality & Processing
 - Sanitize multiline notes before writing to CSV
 - Improve input validation to reduce malformed or incomplete records
 - Extend the schema to capture heart rate or RPE data per set
 - Expand dataset size for more meaningful analysis
+- Create a script to change old exercise names to normalised names
 
 ### Analytics & Platform
 - Add richer QuickSight dashboards for progress tracking and exercise trends
