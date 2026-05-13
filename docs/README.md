@@ -12,10 +12,11 @@ The project focuses on:
 * handling real-world data validation and transformation challenges
 * understanding how data format decisions impact downstream analytics
 
-## 🚧 Terraform Refactor (In Progress)
+## Terraform
 
-Currently refactoring this project to use Terraform for Infrastructure as Code.
-Goal: fully reproducible deployment of all infrastructure.
+Created a fully reproducible AWS architecture with observability built in. Added logging for API Gateway, Lambda, and CloudFront. API Gateway and Lambda publish logs to CloudWatch Log Groups, while CloudFront delivers access logs to an S3 log bucket for potential querying with Athena.
+
+QuickSight was intentionally left outside Terraform to avoid unnecessary ongoing costs.
 
 ## Trade-offs & Limitations
 
@@ -42,12 +43,14 @@ Goal: fully reproducible deployment of all infrastructure.
 ## Project Structure
 ```
 .
-├── Athena_Queries/        # Screenshots of Athena queries and results
-├── README.md              # Project documentation
-├── architecture.png       # Cloud architecture diagram
-├── lambda                 # Lambda function code for transformation and validation
-├── sample-data            # example lambda event and output csv
-├── Quicksight             # Dashboard Screenshots and results
+├── Athena_Queries/              # Screenshots of Athena queries and results
+├── docs/                        # Project documentation
+├── architecture.png             # Cloud architecture diagram
+├── lambda/                      # Lambda function code for transformation and validation
+├── sample-data/                 # example lambda event and output csv
+├── QuickSight_Visualisations/   # Dashboard Screenshots and results
+├── infra/                       # Terraform files
+
 ```
 ## Architecture
 <img width="6471" height="2063" alt="Cloud Architecture" src="https://github.com/user-attachments/assets/d00ed53e-49ec-48db-b983-e6967c598940" />
@@ -77,7 +80,7 @@ Goal: fully reproducible deployment of all infrastructure.
 
 **Cloud & Infrastructure**
 
-* S3, CloudFront, Route 53, API Gateway, Lambda, Cognito, ACM
+* S3, CloudFront, Route 53, API Gateway, Lambda, Cognito, ACM, CloudWatch
 
 **Data & Analytics**
 
@@ -151,7 +154,7 @@ Goal: fully reproducible deployment of all infrastructure.
 ![Total sets per Exercise Query](../Athena_Queries/total_sets_per_exercise_query.png "Query")
 ![Total sets per Exercise Results](../Athena_Queries/total_sets_per_exercise_query_results.png "Results")
 
-## Quicksight Visualisation Examples
+## QuickSight Visualisation Examples
 Interactive QuickSight visualisations exploring gym performance metrics and training patterns.
 
 ### Donut Chart Sum of Reps per Exercise
@@ -180,6 +183,9 @@ Interactive QuickSight visualisations exploring gym performance metrics and trai
 - Extend the schema to capture heart rate or RPE data per set
 - Expand dataset size for more meaningful analysis
 - Create a script to change old exercise names to normalised names
+- Add CI/CD pipeline for Terraform plan/apply and frontend deployment
+- Convert processed CSV data into Parquet for more efficient Athena queries
+- Add CloudTrail for account-level audit logging
 
 ### Analytics & Platform
 - Add richer QuickSight dashboards for progress tracking and exercise trends
@@ -194,5 +200,4 @@ Interactive QuickSight visualisations exploring gym performance metrics and trai
 - Designed and implemented an end-to-end serverless data pipeline  
 - Structured SQL queries to extract meaningful insights from workout data  
 - Developed an understanding of how data formatting impacts downstream analytics systems
-- Understood how AWS credential resolution works locally vs in Lambda (environment variables, profiles, and IAM roles)
-- Leveraged AI-assisted development tools to generate, debug, and refine Lambda functions, infrastructure configuration, and frontend logic, accelerating prototyping while validating system behaviour  
+- Understood how AWS credential resolution works locally vs in Lambda (environment variables, profiles, and IAM roles) 
