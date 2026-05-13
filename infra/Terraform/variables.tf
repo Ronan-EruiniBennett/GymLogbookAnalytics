@@ -72,3 +72,8 @@ variable "AWS_REGION" {
   description = "AWS selected region"
   type        = string
 }
+
+variable "log_bucket" {
+  description = "Bucket for logs, only cloudfront in this case, for potential querying"
+  type        = string
+}

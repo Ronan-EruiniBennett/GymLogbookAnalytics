@@ -11,6 +11,7 @@ resource "aws_cloudfront_origin_access_control" "static_web_oac" {
   signing_protocol                  = "sigv4"
 }
 
+// Creating the Cloudfront distribution
 resource "aws_cloudfront_distribution" "static_web_distribution" {
   origin {
     domain_name              = aws_s3_bucket.static_web_bucket.bucket_regional_domain_name
@@ -63,4 +64,71 @@ resource "aws_cloudfront_distribution" "static_web_distribution" {
     cloudfront_default_certificate = false
     minimum_protocol_version       = "TLSv1.3_2025"
   }
+}
+
+// Setting up logging for cloudwatch to deliver to s3
+resource "aws_cloudwatch_log_delivery_source" "cloudwatch_logs" {
+  provider = aws.us-east-1
+  name     = "cloudfront_log_source"
+  log_type = "ACCESS_LOGS"
+
+  resource_arn = aws_cloudfront_distribution.static_web_distribution.arn
+}
+
+resource "aws_cloudwatch_log_delivery_destination" "cloudwatch_logs" {
+  name     = "cloudfront_log_destination"
+  provider = aws.us-east-1
+
+  delivery_destination_configuration {
+    destination_resource_arn = aws_s3_bucket.log_bucket.arn
+  }
+
+  delivery_destination_type = "S3"
+  output_format             = "json"
+}
+
+resource "aws_cloudwatch_log_delivery" "cloudwatch_logs" {
+  provider                 = aws.us-east-1
+  delivery_source_name     = aws_cloudwatch_log_delivery_source.cloudwatch_logs.name
+  delivery_destination_arn = aws_cloudwatch_log_delivery_destination.cloudwatch_logs.arn
+
+  record_fields = [
+    "date",
+    "time",
+    "c-ip",
+    "cs-method",
+    "cs-host",
+    "cs-uri-stem",
+    "sc-status",
+    "time-taken",
+    "x-edge-location",
+    "x-edge-result-type",
+    "x-cache",
+    "cs-user-agent",
+    "cs-referer"
+  ]
+}
+
+// Log delivery Policy
+data "aws_iam_policy_document" "cloudfront_delivery_policy" {
+  statement {
+    sid    = "AllowCloudfrontPushToS3"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+
+    actions = ["s3:PutObject"]
+
+    resources = ["${aws_s3_bucket.log_bucket.arn}/*"]
+  }
+
+}
+
+// Log delivery policy attatched inline
+resource "aws_cloudwatch_log_delivery_destination_policy" "attatch_policy_logs" {
+  delivery_destination_name   = aws_cloudwatch_log_delivery_destination.cloudwatch_logs.name
+  delivery_destination_policy = data.aws_iam_policy_document.cloudfront_delivery_policy.json
 }
