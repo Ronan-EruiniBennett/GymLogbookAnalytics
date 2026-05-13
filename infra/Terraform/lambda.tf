@@ -68,6 +68,12 @@ resource "aws_lambda_permission" "lambda_resource_policy" {
   source_arn = "${aws_apigatewayv2_api.httpAPI.execution_arn}/*"
 }
 
+resource "aws_cloudwatch_log_group" "lambda_log_group" {
+  name              = "/aws/lambda/workout_function"
+  log_group_class   = "STANDARD"
+  retention_in_days = 30
+}
+
 // Create the Lambda function resource, uses sha256 to discover changes in source file, creates environment variable BUCKET_NAME for the lambda function to use.
 resource "aws_lambda_function" "gym_log_csv_function" {
   filename      = data.archive_file.CSV_transformation_logic.output_path
@@ -82,6 +88,13 @@ resource "aws_lambda_function" "gym_log_csv_function" {
     variables = {
       BUCKET_NAME = aws_s3_bucket.data_bucket.id
     }
+  }
+
+  logging_config {
+    log_format            = "JSON"
+    log_group             = aws_cloudwatch_log_group.lambda_log_group.name
+    application_log_level = "INFO"
+    system_log_level      = "INFO"
   }
 }
 

@@ -57,19 +57,19 @@ resource "aws_apigatewayv2_stage" "httpAPI_stage" {
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.workout_api_logs.arn
     format = jsonencode({
-      apiId = "$context.apiId"
-      userId = "$context.authorizer.claims.sub"
-      cognito_clientId = "$context.authorizer.claims.aud"
-      cognito_error_message = "$context.authorizer.error"
-      domain_of_request = "$context.domainName"
-      apigateway_error_message = "$context.error.message"
-      http_method = "$context.httpMethod"
-      cognito_authentication_info = "$context.identity.cognitoAuthenticationProvider"
+      apiId                              = "$context.apiId"
+      userId                             = "$context.authorizer.claims.sub"
+      cognito_clientId                   = "$context.authorizer.claims.aud"
+      cognito_error_message              = "$context.authorizer.error"
+      domain_of_request                  = "$context.domainName"
+      apigateway_error_message           = "$context.error.message"
+      http_method                        = "$context.httpMethod"
+      cognito_authentication_info        = "$context.identity.cognitoAuthenticationProvider"
       cognito_user_authentication_status = "$context.identity.cognitoAuthenticationType"
-      request_time = "$context.requestTime"
-      response_latency = "$context.responseLatency"
-      api_route_key = "$context.routeKey"
-      api_stage = "$context.stage"
+      request_time                       = "$context.requestTime"
+      response_latency                   = "$context.responseLatency"
+      api_route_key                      = "$context.routeKey"
+      api_stage                          = "$context.stage"
     })
   }
 }
@@ -79,20 +79,20 @@ resource "aws_apigatewayv2_stage" "httpAPI_stage" {
 // Trust policy for api gateway
 data "aws_iam_policy_document" "api_trust_policy" {
   statement {
-    sid = "api_gateway_assume_role"
+    sid    = "api_gateway_assume_role"
     effect = "Allow"
 
     principals {
-      type = "Service"
-      identifiers = [ "apigateway.amazonaws.com" ]
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
     }
 
-    actions = [ "sts:AssumeRole" ]
+    actions = ["sts:AssumeRole"]
 
     condition {
-    test     = "StringEquals"
-    variable = "aws:SourceAccount"
-    values   = [data.aws_caller_identity.account.account_id]
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.account.account_id]
 
     }
   }
@@ -100,12 +100,12 @@ data "aws_iam_policy_document" "api_trust_policy" {
 
 // Role for api gateway at account level
 resource "aws_iam_role" "api_gateway_logging_role" {
-  name = "api_gateway_account_role"
+  name               = "api_gateway_account_role"
   assume_role_policy = data.aws_iam_policy_document.api_trust_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "Logging" {
-  role = aws_iam_role.api_gateway_logging_role.id
+  role       = aws_iam_role.api_gateway_logging_role.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
 }
 
@@ -115,8 +115,8 @@ resource "aws_api_gateway_account" "logging_role" {
 }
 
 // Creating a log group for the stage
-resource aws_cloudwatch_log_group "workout_api_logs" {
-  name = "workout_api_log_group"
-  log_group_class = "STANDARD"
+resource "aws_cloudwatch_log_group" "workout_api_logs" {
+  name              = "/aws/apigateway/workout_api"
+  log_group_class   = "STANDARD"
   retention_in_days = 30
 }
