@@ -51,6 +51,7 @@ resource "aws_iam_role_policy" "add_permissions" {
   role   = aws_iam_role.lambda_gym_log_execution_role.id
 }
 
+
 // Allowing lambda to publish logs to cloudwatch logs for troubleshooting
 resource "aws_iam_role_policy_attachment" "add_logging" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
