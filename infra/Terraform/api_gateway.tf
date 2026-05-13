@@ -58,6 +58,7 @@ resource "aws_apigatewayv2_stage" "httpAPI_stage" {
     destination_arn = aws_cloudwatch_log_group.workout_api_logs.arn
     format = jsonencode({
       apiId                              = "$context.apiId"
+      requestId                          = "$context.requestId"
       userId                             = "$context.authorizer.claims.sub"
       cognito_clientId                   = "$context.authorizer.claims.aud"
       cognito_error_message              = "$context.authorizer.error"
@@ -79,7 +80,7 @@ resource "aws_apigatewayv2_stage" "httpAPI_stage" {
 // Trust policy for api gateway
 data "aws_iam_policy_document" "api_trust_policy" {
   statement {
-    sid    = "api_gateway_assume_role"
+    sid    = "apigatewayAssumeRole"
     effect = "Allow"
 
     principals {

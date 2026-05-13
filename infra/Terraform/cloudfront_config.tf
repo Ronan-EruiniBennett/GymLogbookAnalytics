@@ -97,38 +97,14 @@ resource "aws_cloudwatch_log_delivery" "cloudwatch_logs" {
     "time",
     "c-ip",
     "cs-method",
-    "cs-host",
+    "cs(Host)",
     "cs-uri-stem",
     "sc-status",
     "time-taken",
     "x-edge-location",
     "x-edge-result-type",
-    "x-cache",
-    "cs-user-agent",
-    "cs-referer"
+    "x-forwarded-for",
+    "cs(User-Agent)",
+    "cs(Referer)"
   ]
-}
-
-// Log delivery Policy
-data "aws_iam_policy_document" "cloudfront_delivery_policy" {
-  statement {
-    sid    = "AllowCloudfrontPushToS3"
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["delivery.logs.amazonaws.com"]
-    }
-
-    actions = ["s3:PutObject"]
-
-    resources = ["${aws_s3_bucket.log_bucket.arn}/*"]
-  }
-
-}
-
-// Log delivery policy attatched inline
-resource "aws_cloudwatch_log_delivery_destination_policy" "attatch_policy_logs" {
-  delivery_destination_name   = aws_cloudwatch_log_delivery_destination.cloudwatch_logs.name
-  delivery_destination_policy = data.aws_iam_policy_document.cloudfront_delivery_policy.json
 }

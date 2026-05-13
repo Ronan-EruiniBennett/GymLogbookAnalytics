@@ -182,3 +182,26 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
     filter {}
   }
 }
+
+// Log delivery Policy for s3 permissions
+data "aws_iam_policy_document" "cloudfront_delivery_policy" {
+  statement {
+    sid    = "AllowCloudfrontPushToS3Logs"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+
+    actions = ["s3:PutObject"]
+
+    resources = ["${aws_s3_bucket.log_bucket.arn}/*"]
+  }
+}
+
+// s3 bucket policy for logs
+resource "aws_s3_bucket_policy" "log_bucket_policy" {
+  bucket = aws_s3_bucket.log_bucket.bucket
+  policy = data.aws_iam_policy_document.cloudfront_delivery_policy.json
+}

@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "query_bucket" {
 }
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = var.log_bucket
+  bucket           = var.log_bucket
 
   force_destroy = true
 }
