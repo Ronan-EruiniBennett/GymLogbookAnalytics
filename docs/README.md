@@ -8,7 +8,7 @@ The system ingests structured workout data from a web application, processes it 
 
 The project focuses on:
 
-* building a complete frontend-to-analytics pipeline
+* building a data pipeline
 * handling real-world data validation and transformation challenges
 * understanding how data format decisions impact downstream analytics
 
@@ -125,6 +125,7 @@ QuickSight was intentionally left outside Terraform to avoid unnecessary ongoing
 * Rows are written into an in-memory CSV using Python (`io.StringIO`, `csv.writer`)
 * A unique S3 object key is generated per workout session
 * The CSV file is uploaded to S3 for downstream analytics
+* Python and Boto3 migration script to batch-process historical CSV files in S3, normalise inconsistent exercise names, and write corrected files to a separate cleaned prefix.
 
 ### 5. Data Analytics
 
@@ -182,7 +183,6 @@ Interactive QuickSight visualisations exploring gym performance metrics and trai
 - Improve input validation to reduce malformed or incomplete records
 - Extend the schema to capture heart rate or RPE data per set
 - Expand dataset size for more meaningful analysis
-- Create a script to change old exercise names to normalised names
 - Add CI/CD pipeline for Terraform plan/apply and frontend deployment
 - Convert processed CSV data into Parquet for more efficient Athena queries
 - Add CloudTrail for account-level audit logging
