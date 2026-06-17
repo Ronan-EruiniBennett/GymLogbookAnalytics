@@ -187,14 +187,13 @@ Interactive QuickSight visualisations exploring gym performance metrics and trai
 - Improve input validation to reduce malformed or incomplete records
 - Extend the schema to capture heart rate or RPE data per set
 - Expand dataset size for more meaningful analysis
-- Add CI/CD pipeline for Terraform plan/apply and frontend deployment
 - Convert processed CSV data into Parquet for more efficient Athena queries
 - Add CloudTrail for account-level audit logging
 
 ### Analytics & Platform
 - Add richer QuickSight dashboards for progress tracking and exercise trends
 - Convert processed CSV data into Parquet for more efficient querying
-- Automate deployment and updates with CI/CD using GitHub actions
+- Automate deployment with CI/CD using GitHub actions
 
 ## Challenges and Learnings
 
