@@ -8,7 +8,7 @@ import os
 
 # Test event simulating data from api gateway to the lambda function.
 ### test_event = {
-    ### "body": "{\"workout_date\":\"2026-04-10\",\"notes\":\"Good session\",\"exercises\":[{\"name\":\"Bench Press\",\"sets\":[{\"reps\":10,\"weight_kg\":60},{\"reps\":8,\"weight_kg\":70}]},{\"name\":\"Squat\",\"sets\":[{\"reps\":5,\"weight_kg\":100},{\"reps\":5,\"weight_kg\":105}]}]}"
+    ### "body": "{\"workout_date\":\"2026-04-10\",\"notes\":\"Good session\",\"exercises\":[{\"name\":\"bench press\",\"sets\":[{\"reps\":10,\"weight_kg\":60},{\"reps\":8,\"weight_kg\":70}]},{\"name\":\"SQUAT\",\"sets\":[{\"reps\":5,\"weight_kg\":100},{\"reps\":5,\"weight_kg\":105}]}]}"
 ###}
 
 # Function that defines how the event object is parsed into a Python dictionary. Event.body is expected to be a String.
@@ -23,14 +23,14 @@ def row_maker(workout):
     rows = []
     for exercise in workout["exercises"]:
         for set_number in exercise["sets"]:
-            row = [workout["workout_date"], workout["notes"], exercise["name"], set_number["reps"], set_number["weight_kg"]]
+            row = [workout["workout_date"], workout["notes"], exercise["name"].title(), set_number["reps"], set_number["weight_kg"]]
             rows.append(row)
     return rows
            
 
 # rows = row_maker(workout_dict)
 
-# This code creates a fake CSV file in memory using the io.StringIO class. It then uses the csv.writer to write the header row and the data rows to the fake CSV file. 
+# This code creates a fake CSV file in memory using the io.StringIO class. It then uses the csv.writer to write the header row and the data rows to the fake CSV file.
 def csv_maker(rows):
     fake_csv = io.StringIO()
     writer = csv.writer(fake_csv)
@@ -39,6 +39,7 @@ def csv_maker(rows):
     return fake_csv.getvalue()
 
 # csv_content = csv_maker(rows)
+# print(csv_content)
 
 # The key_maker function generates a unique key for storing the workout data in a storage system (like S3). It constructs the key using the workout date and a UUID.
 def key_maker(workout):
