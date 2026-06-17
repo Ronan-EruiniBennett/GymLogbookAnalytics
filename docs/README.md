@@ -1,5 +1,9 @@
 # GymLogbookAnalytics
 
+[![Pylint](https://github.com/Ronan-EruiniBennett/GymLogbookAnalytics/actions/workflows/pylint.yml/badge.svg)](https://github.com/Ronan-EruiniBennett/GymLogbookAnalytics/actions/workflows/pylint.yml)
+
+[![Terraform](https://github.com/Ronan-EruiniBennett/GymLogbookAnalytics/actions/workflows/terraform.yml/badge.svg)](https://github.com/Ronan-EruiniBennett/GymLogbookAnalytics/actions/workflows/terraform.yml)
+
 ## Overview
 
 This project is a serverless data pipeline built on AWS to collect, validate, transform, and analyse gym workout data in near real time.
