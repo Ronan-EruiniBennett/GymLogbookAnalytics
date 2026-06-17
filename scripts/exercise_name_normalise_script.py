@@ -1,10 +1,12 @@
+"""One-off migration script to title-case exercise names in S3 CSVs and write to cleaned/."""
+# pylint: disable=duplicate-code
 import csv
 import io
 import uuid
 import boto3
 
 s3 = boto3.client('s3')
-bucket_name = 'my-gym-logbook-12345'
+BUCKET_NAME = 'my-gym-logbook-12345'
 
 old_paths = [
     'raw/',
@@ -16,7 +18,7 @@ files = []
 
 for old_path in old_paths:
     object_list = s3.list_objects_v2(
-        Bucket=bucket_name,
+        Bucket=BUCKET_NAME,
         Prefix=old_path
     )
 
@@ -27,12 +29,13 @@ for old_path in old_paths:
     ])
 
 
-def upload_to_s3(csv_content, key):
-    object_key = key
+def upload_to_s3(csv_content, s3_key):
+    """Upload csv_content to BUCKET_NAME at s3_key."""
+    object_key = s3_key
     body = csv_content
 
     s3.put_object(
-        Bucket=bucket_name,
+        Bucket=BUCKET_NAME,
         Key=object_key,
         Body=body,
         ContentType='text/csv'
@@ -42,7 +45,7 @@ def upload_to_s3(csv_content, key):
 # Extract and transform the content of each file.
 for key in files:
     response = s3.get_object(
-        Bucket=bucket_name,
+        Bucket=BUCKET_NAME,
         Key=key
     )
 

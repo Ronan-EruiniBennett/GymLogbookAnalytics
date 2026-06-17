@@ -1,4 +1,5 @@
 """Lambda function that receives workout data from API Gateway and stores it as CSV in S3."""
+# pylint: disable=duplicate-code
 import json
 import csv
 import io
@@ -120,7 +121,7 @@ def validate_workout(workout):
             if set_number.get("reps") in ("", None) or set_number.get("weight_kg") in ("", None):
                 raise ValueError("Reps and weight_kg cannot be empty or null")
 
-def lambda_handler(event, context):
+def lambda_handler(event, _context):
     """Entry point for the Lambda function; routes success and errors to structured responses."""
     try:
         rows, workout_key = process_workout(event)
@@ -132,6 +133,6 @@ def lambda_handler(event, context):
         return response(400, {"message": "Invalid workout data",
                               "error": str(ve)})
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         return response(500, {"message": "Error processing workout",
                               "error": str(e)})
