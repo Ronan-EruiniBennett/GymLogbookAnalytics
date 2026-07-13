@@ -359,3 +359,11 @@ def test_lambda_handler_returns_500_on_unexpected_error(mock_upload, test_event)
     assert result["statusCode"] == 500
 
 # EXERCISE 6a - Key maker Unit Test
+
+@patch("gym_logbook_submit.uuid.uuid4")
+def test_key_maker_returns_correct_key(randomnumber, valid_workout):
+    randomnumber.return_value = "123456"
+
+    key = key_maker(valid_workout)
+
+    assert key == "workouts/2026-06-18/123456.csv"
