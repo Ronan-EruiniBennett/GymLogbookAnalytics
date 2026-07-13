@@ -229,8 +229,6 @@ def test_csv_maker_preserves_row_data():
 # FULLY WORKED EXAMPLE — read this, then write the exercises below.
 # ==============================================================================
 
-#### UP TO HERE
-
 def test_validate_workout_raises_on_empty_reps():
     # Arrange — a workout where reps is an empty string
     workout = {
@@ -245,20 +243,50 @@ def test_validate_workout_raises_on_empty_reps():
     with pytest.raises(ValueError):
         validate_workout(workout)
 
+def test_validate_workout_raises_on_none_reps():
+    # Arrange — a workout where reps is an empty string
+    workout = {
+        "exercises": [
+            {"sets": [{"reps": None, "weight_kg": 100}]}
+        ]
+    }
 
-# EXERCISE 4a — write a test for the case where weight_kg is None.
+    # Assert (wrapping Act) — pytest.raises is a context manager.
+    # The code inside the `with` block MUST raise the named exception,
+    # otherwise the test fails. This is how you verify error handling.
+    with pytest.raises(ValueError):
+        validate_workout(workout)
 
 
-# EXERCISE 4b — write a test for the case where reps is None.
+# EXERCISE 4a — write a test for the case where weight_kg is empty.
+def test_validate_workout_raises_on_empty_weight():
+    #Arrange
+    workout = {
+        "exercises": [
+            {"sets": [{"reps": "", "weight_kg": ""}]}
+        ]
+    }
 
+    with pytest.raises(ValueError):
+        validate_workout(workout)
+
+def test_validate_workout_raises_on_none_weight():
+    #Arrange
+    workout = {
+        "exercises": [
+            {"sets": [{"reps": "", "weight_kg": None}]}
+        ]
+    }
+
+    with pytest.raises(ValueError):
+        validate_workout(workout)
 
 # EXERCISE 4c — write a test that confirms validate_workout does NOT raise
 # when the data is valid. Use the `valid_workout` fixture from conftest.py.
 # Hint: just call the function — if it raises, pytest will catch it and fail the test.
 #
-# def test_validate_workout_passes_with_valid_data(valid_workout):
-#     ...
-
+def test_validate_workout_passes_with_valid_data(valid_workout):
+    validate_workout(valid_workout)
 
 # ==============================================================================
 # SECTION 5 — lambda_handler (with mocking)
