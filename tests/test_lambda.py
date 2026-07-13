@@ -305,23 +305,12 @@ def test_validate_workout_passes_with_valid_data(valid_workout):
 # FULLY WORKED — the first test shows the full pattern. The rest are exercises.
 # ==============================================================================
 
-VALID_EVENT = {
-    "body": json.dumps({
-        "workout_date": "2026-06-18",
-        "notes": "test",
-        "exercises": [
-            {"name": "squat", "sets": [{"reps": 5, "weight_kg": 100}]}
-        ]
-    })
-}
-
-
 @patch("gym_logbook_submit.upload_to_s3")
-def test_lambda_handler_returns_200_on_valid_input(mock_upload):
+def test_lambda_handler_returns_200_on_valid_input(mock_upload, test_event):
     # Arrange — VALID_EVENT is defined above; mock_upload replaces the real S3 call
 
     # Act
-    result = lambda_handler(VALID_EVENT, None)
+    result = lambda_handler(test_event, None)
 
     # Assert
     assert result["statusCode"] == 200
@@ -340,26 +329,33 @@ def test_lambda_handler_returns_400_on_invalid_data(mock_upload):
         })
     }
 
-    with pytest.raises(ValueError):
-        lambda_handler(bad_event, None)
+    result = lambda_handler(bad_event, None)
 
-    # EXERCISE 5a — call lambda_handler with bad_event and assert the status code is 400
-
+    assert result["statusCode"] == 400
 
 # EXERCISE 5b — write a test that checks the response body contains a "message" key.
 # Hint: the body is a JSON string — you'll need json.loads() to parse it.
 # Hint: look at what lambda_handler actually returns on line 128 of the Lambda file.
-#
-# @patch("gym_logbook_submit.upload_to_s3")
-# def test_lambda_handler_200_response_contains_message_key(mock_upload):
-#     ...
 
+@patch("gym_logbook_submit.upload_to_s3")
+def test_lambda_handler_200_response_contains_message_key(mock_upload, test_event):
+
+    result = lambda_handler(test_event, None)
+    response = result["body"]
+
+    assert json.loads(response)["message"] == "Workout processed successfully"
 
 # EXERCISE 5c — STRETCH GOAL
 # Write a test that checks lambda_handler returns 500 when upload_to_s3 raises
 # an unexpected exception. You can make the mock raise by doing:
 #     mock_upload.side_effect = Exception("something broke")
 #
-# @patch("gym_logbook_submit.upload_to_s3")
-# def test_lambda_handler_returns_500_on_unexpected_error(mock_upload):
-#     ...
+@patch("gym_logbook_submit.upload_to_s3")
+def test_lambda_handler_returns_500_on_unexpected_error(mock_upload, test_event):
+    mock_upload.side_effect = Exception("Unable to reach AWS")
+
+    result = lambda_handler(test_event, None)
+
+    assert result["statusCode"] == 500
+
+# EXERCISE 6a - Key maker Unit Test

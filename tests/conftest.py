@@ -22,6 +22,7 @@ it lives here rather than being copy-pasted into each test.
 """
 
 import pytest
+import json
 
 
 @pytest.fixture
@@ -47,4 +48,22 @@ def valid_workout():
         ]
     }
 
-
+@pytest.fixture
+def test_event():
+    """Test event simulating data from api gateway to the lambda function."""
+    return {
+     "body": json.dumps({
+         "workout_date": "2026-04-10",
+         "notes": "Good session",
+         "exercises": [
+             {
+                 "name": "bench press",
+                 "sets": [{"reps": 10, "weight_kg": 60}, {"reps": 8, "weight_kg": 70}]
+             },
+             {
+                 "name": "SQUAT",
+                 "sets": [{"reps": 5, "weight_kg": 100}, {"reps": 5, "weight_kg": 105}]
+             }
+         ]
+     })
+    }
