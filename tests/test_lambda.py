@@ -340,6 +340,9 @@ def test_lambda_handler_returns_400_on_invalid_data(mock_upload):
         })
     }
 
+    with pytest.raises(ValueError):
+        lambda_handler(bad_event, None)
+
     # EXERCISE 5a — call lambda_handler with bad_event and assert the status code is 400
 
 

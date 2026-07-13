@@ -48,9 +48,3 @@ def valid_workout():
     }
 
 
-# EXERCISE: Add a second fixture called `invalid_workout` that has a set where
-# reps is "" and weight_kg is None. You'll use it when testing validate_workout.
-#
-# @pytest.fixture
-# def invalid_workout():
-#     ...
