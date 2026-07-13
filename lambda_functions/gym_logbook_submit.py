@@ -41,6 +41,9 @@ def event_parse(event):
 def row_maker(workout):
     """Flatten nested workout exercises and sets into a list of CSV-ready rows."""
     rows = []
+    if workout["exercises"] == []:
+        raise ValueError("Exercises musn't be empty")
+    
     for exercise in workout["exercises"]:
         for set_number in exercise["sets"]:
             row = [
