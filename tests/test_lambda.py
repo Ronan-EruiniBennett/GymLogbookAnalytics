@@ -334,7 +334,7 @@ def test_lambda_handler_returns_400_on_invalid_data(mock_upload):
 
     result = lambda_handler(bad_event, None)
 
-    mock_upload.assert_called_once()
+    mock_upload.assert_not_called()
     assert result["statusCode"] == 400
 
 # EXERCISE 5b — write a test that checks the response body contains a "message" key.
