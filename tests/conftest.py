@@ -21,8 +21,8 @@ your Lambda receives after event_parse() runs. Several tests will need this, so
 it lives here rather than being copy-pasted into each test.
 """
 
-import pytest
 import json
+import pytest
 
 
 @pytest.fixture
