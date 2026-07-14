@@ -43,7 +43,6 @@ def row_maker(workout):
     rows = []
     if workout["exercises"] == []:
         raise ValueError("Exercises musn't be empty")
-    
     for exercise in workout["exercises"]:
         for set_number in exercise["sets"]:
             row = [

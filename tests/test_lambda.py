@@ -113,7 +113,9 @@ def test_row_maker_returns_correct_number_of_rows(valid_workout):
     rows = row_maker(valid_workout)
 
     # EXERCISE 2a — assert that len(rows) equals the number of sets in valid_workout
-    assert len(rows) == sum("reps" in number for exercise in valid_workout["exercises"] for number in exercise["sets"])
+    assert len(rows) == sum(
+        "reps" in number for exercise in valid_workout["exercises"] for number in exercise["sets"]
+        )
 
 
 def test_row_maker_title_cases_exercise_names(valid_workout):
@@ -313,6 +315,7 @@ def test_lambda_handler_returns_200_on_valid_input(mock_upload, test_event):
     result = lambda_handler(test_event, None)
 
     # Assert
+    mock_upload.assert_called_once()
     assert result["statusCode"] == 200
 
 
@@ -331,6 +334,7 @@ def test_lambda_handler_returns_400_on_invalid_data(mock_upload):
 
     result = lambda_handler(bad_event, None)
 
+    mock_upload.assert_called_once()
     assert result["statusCode"] == 400
 
 # EXERCISE 5b — write a test that checks the response body contains a "message" key.
@@ -343,6 +347,7 @@ def test_lambda_handler_200_response_contains_message_key(mock_upload, test_even
     result = lambda_handler(test_event, None)
     response = result["body"]
 
+    mock_upload.assert_called_once()
     assert json.loads(response)["message"] == "Workout processed successfully"
 
 # EXERCISE 5c — STRETCH GOAL
